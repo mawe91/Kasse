@@ -1,4 +1,3 @@
-
 import javax.swing.UIManager;
 
 import controller.Controller;
