@@ -234,6 +234,12 @@ public class Controller implements ActionListener, ListSelectionListener, ItemLi
 					
 					mdf.showNewVoucherForm();
 				}
+			} else if (dataToLoad.equals("Speichern")){
+				Voucher nv = mdf.getNewVoucher();
+				System.out.println(nv.getDescription());
+				System.out.println(nv.getId());
+				System.out.println(nv.getPrice());
+				System.out.println(nv.getColor());
 			}
 		}
 
