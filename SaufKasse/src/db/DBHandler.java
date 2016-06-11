@@ -298,7 +298,7 @@ public class DBHandler {
 			stmt = conn.createStatement();
 
 			String sqlInsert;
-			sqlInsert = "UPDATE `kasse`.`"+classname+"` SET `isActive`='0' WHERE `id`='" + iD + "';";
+			sqlInsert = "UPDATE `kasse`.`" + classname + "` SET `isActive`='0' WHERE `id`='" + iD + "';";
 
 			stmt.executeUpdate(sqlInsert);
 
@@ -333,6 +333,53 @@ public class DBHandler {
 
 			disconnect();
 		}
+	}
+
+	public void saveNewVoucher(Voucher v) {
+		Connection conn = connect();
+		Statement stmt = null;
+		try {
+			stmt = conn.createStatement();
+			Color vcol = v.getColor();
+			String sqlInsert;
+			sqlInsert = "INSERT INTO voucher (price, description, color, isActive) VALUES (" + v.getPrice() + ", '"
+					+ v.getDescription() + "', '"
+					+ String.format("#%02x%02x%02x", vcol.getRed(), vcol.getGreen(), vcol.getBlue()) + "', " + true
+					+ ")";
+			System.out.println(sqlInsert);
+			stmt.executeUpdate(sqlInsert);
+
+			// Clean-up environment
+			stmt.close();
+			disconnect();
+
+		} catch (
+
+		SQLException se)
+
+		{
+			// Handle errors for JDBC
+			se.printStackTrace();
+		} catch (
+
+		Exception e)
+
+		{
+			// Handle errors for Class.forName
+			e.printStackTrace();
+		} finally
+
+		{
+			// finally block used to close resources
+			try {
+				if (stmt != null)
+					stmt.close();
+			} catch (SQLException se2) {
+			} // nothing we can do
+
+			disconnect();
+		}
+
 	}
 
 }

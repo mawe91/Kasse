@@ -240,6 +240,7 @@ public class Controller implements ActionListener, ListSelectionListener, ItemLi
 				System.out.println(nv.getId());
 				System.out.println(nv.getPrice());
 				System.out.println(nv.getColor());
+				model.saveNewVoucherAndRevalidateCaches(nv);
 			}
 		}
 
