@@ -117,6 +117,7 @@ public class VoucherDetailPanel extends AbstractKassenPanel {
 
 		// Leere Felder laden
 		desicriptionTextField.setText("");
+		colorTextField.setText("");
 		colorTextField.setBackground(Color.WHITE);
 		priceTextField.setText("");
 
