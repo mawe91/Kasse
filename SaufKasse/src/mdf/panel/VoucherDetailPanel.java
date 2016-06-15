@@ -138,7 +138,7 @@ public class VoucherDetailPanel extends AbstractKassenPanel {
 	}
 
 	public Voucher getNewVoucher() {
-		// TODO Auto-generated method stub
+		// TODO Validate input fields
 		return new Voucher(desicriptionTextField.getText(), Double.parseDouble(priceTextField.getText()), Color.decode(colorTextField.getText()));
 	}
 
