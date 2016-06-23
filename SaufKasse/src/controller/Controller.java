@@ -1,6 +1,5 @@
 package controller;
 
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -235,12 +234,20 @@ public class Controller implements ActionListener, ListSelectionListener, ItemLi
 					mdf.showNewVoucherForm();
 				}
 			} else if (dataToLoad.equals("Speichern")){
+				
+				//TODO Validierung 
+				
+				//Voucher aus Eingabe erzeugen
 				Voucher nv = mdf.getNewVoucher();
-				System.out.println(nv.getDescription());
-				System.out.println(nv.getId());
-				System.out.println(nv.getPrice());
-				System.out.println(nv.getColor());
+				
+				//Voucher abspeichern
 				model.saveNewVoucherAndRevalidateCaches(nv);
+				
+				//update mdf vouchers
+				mdf.updateButtons(model.getAllVouchers());
+				
+				//zeige entsprechende detailpage
+				mdf.updateDetailPageArea(nv, true);
 			}
 		}
 
