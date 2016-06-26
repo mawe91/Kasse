@@ -19,6 +19,14 @@ public class Voucher {
 		this.price = price;
 		this.color = color;
 	}
+	
+	public Voucher(String description, double price, Color color) {
+		super();
+		format = new DecimalFormat("#0.00");
+		this.description = description;
+		this.price = price;
+		this.color = color;
+	}
 
 	public Voucher() {
 		super();

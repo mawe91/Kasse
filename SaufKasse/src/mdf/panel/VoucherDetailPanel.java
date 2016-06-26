@@ -137,4 +137,9 @@ public class VoucherDetailPanel extends AbstractKassenPanel {
 		priceTextField.setEditable(editable);
 	}
 
+	public Voucher getNewVoucher() {
+		// TODO Validate input fields
+		return new Voucher(desicriptionTextField.getText(), Double.parseDouble(priceTextField.getText()), Color.decode(colorTextField.getText()));
+	}
+
 }

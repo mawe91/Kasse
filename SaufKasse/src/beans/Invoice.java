@@ -1,6 +1,8 @@
 package beans;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Invoice {
 
@@ -47,19 +49,15 @@ public class Invoice {
 		return total;
 	}
 
-	public int[] getVoucherCount() {
-		int[] vouchers = new int[voucherCount];
-
-		for (int i = 0; i < vouchers.length; i++) {
-			vouchers[i] = 0;
-		}
-
+	public Map<Integer, Integer> getVoucherCount() {
+		Map<Integer, Integer> myMap = new HashMap<Integer, Integer>();
+		
 		for (int i = 0; i < invoiceLines.size(); i++) {
-			vouchers[invoiceLines.get(i).getVoucherID() - 1] = vouchers[invoiceLines.get(i).getVoucherID() - 1]
-					+ invoiceLines.get(i).getCount();
+			Integer freq = myMap.get(invoiceLines.get(i).getVoucherID());
+			myMap.put(invoiceLines.get(i).getVoucherID(), (freq == null) ? 1 : freq + 1);
 		}
 
-		return vouchers;
+		return myMap;
 	}
 
 	public void deleteInvoiceLine(int lineNumber) {

@@ -418,4 +418,10 @@ public class Model extends Observable {
 		return true;
 	}
 
+	public void saveNewVoucherAndRevalidateCaches(Voucher v) {
+		dbh.saveNewVoucher(v);
+		invalidateCaches();
+		loadVoucherAndProductsIfNecessary();
+	}
+
 }

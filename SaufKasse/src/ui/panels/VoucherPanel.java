@@ -3,6 +3,7 @@ package ui.panels;
 import java.awt.Color;
 import java.awt.Font;
 import java.util.ArrayList;
+import java.util.Map;
 
 import javax.swing.JLabel;
 
@@ -25,12 +26,17 @@ public class VoucherPanel extends AbstractKassenPanel {
 		// Implementation of Voucher
 		voucherAl = new ArrayList<Voucher>();
 
-		//setBorder(getNewTitledBorder(""));
+		// setBorder(getNewTitledBorder(""));
 	}
 
-	public void updateVoucherCount(int[] countArray) {
-		for (int i = 0; i < countArray.length; i++) {
-			voucherLabels.get(i).setText("" + countArray[i]);
+	public void updateVoucherCount(Map<Integer, Integer> voucherMap) {
+		for (int i = 0; i < voucherLabels.size(); i++) {
+			Integer vIDCount = voucherMap.get(i + 1);
+			if (vIDCount == null) {
+				vIDCount = 0;
+				System.out.println("Update Voucher Panel - VoucherID " + i + " - Count set to zero");
+			}
+			voucherLabels.get(i).setText("" + vIDCount);
 		}
 
 	}
@@ -56,12 +62,12 @@ public class VoucherPanel extends AbstractKassenPanel {
 
 	public void changeToPayMode() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void changeToSellingMode() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void changeFont(Font buttonAndComboFont) {

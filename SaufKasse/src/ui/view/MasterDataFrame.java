@@ -205,6 +205,11 @@ public class MasterDataFrame extends JFrame {
 		repaint();
 		
 	}
+
+	public Voucher getNewVoucher() {
+		// TODO Auto-generated method stub
+		return voucherContentPanel.getNewVoucher();
+	}
 		
 
 }
