@@ -1,6 +1,7 @@
 package db;
 
 import java.awt.Color;
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -23,12 +24,14 @@ public class DBHandler {
 
 	// JDBC driver name and database URL
 	private static final String JDBC_DRIVER = "org.sqlite.JDBC";
-	private static final String DB_URL = "jdbc:sqlite:kasse.db";
+	private static final String DB_URL = "jdbc:sqlite:" + System.getenv("APPDATA") + "\\Kasse\\kasse.db";
 
 	// Database credentials
 	private static final String USER = "root";
 	private static final String PASS = "passwd";
 
+	private File dir = new File(System.getenv("APPDATA")+"\\Kasse");
+	
 	// Variables
 	private Connection connection;
 	private Statement stmt;
@@ -77,10 +80,9 @@ public class DBHandler {
 	private static final String GET_PRODUCTS = "SELECT * FROM product;";
 	private static final String GET_VOUCHERS = "SELECT * FROM voucher;";
 
-	
 	public DBHandler() {
+		dir.mkdir();
 		openConnection();
-
 	}
 
 	private void openConnection() {
@@ -88,6 +90,7 @@ public class DBHandler {
 			Class.forName("org.sqlite.JDBC");
 			connection = DriverManager.getConnection(DB_URL, USER, PASS);
 			stmt = connection.createStatement();
+			
 
 			// populate db if nessassary
 			stmt.execute(CREATE_TABLE1);
@@ -145,6 +148,8 @@ public class DBHandler {
 				// TODO: handle exception
 			}
 
+			System.out.println();
+
 		} catch (Exception e) {
 			log.log(Level.SEVERE, e.toString());
 		}
@@ -193,6 +198,7 @@ public class DBHandler {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+
 		}
 		return voucherList;
 	}
@@ -217,7 +223,7 @@ public class DBHandler {
 
 	}
 
-	 /* 
+	/*
 	 * // Clean-up environment rs.close(); stmt.close(); disconnect();
 	 * 
 	 * } catch (SQLException se) { // Handle errors for JDBC
