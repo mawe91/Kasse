@@ -43,7 +43,8 @@ public class OrderButtonPanel extends AbstractKassenPanel {
 
 			buttonToAdd = generateNewJButton(product.getName(), listener, font);
 
-			if (product.isDrink()) {
+			//TODO Anpassen auf Kategorie
+			if (true) {
 				setConstraintSettings(0, addedButtonsFirstCol, 0.5, 0.5, 1, 1);
 				addedButtonsFirstCol++;
 			} else {
