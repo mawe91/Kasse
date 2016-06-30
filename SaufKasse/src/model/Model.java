@@ -20,7 +20,6 @@ public class Model extends Observable {
 	private Invoice currentInvoice;
 	private String calcText;
 	private double paidSum;
-	private boolean mockMode;
 
 	private ArrayList<Voucher> voucherArrayMock;
 	private ArrayList<Product> productArrayMock;
@@ -28,10 +27,9 @@ public class Model extends Observable {
 	private ArrayList<Voucher> voucherCache;
 	private ArrayList<Product> productCache;
 
-	
 	private DBHandler dbh;
 
-	public Model(DBHandler dbh, boolean mockMode) {
+	public Model(DBHandler dbh) {
 
 		super();
 
@@ -39,75 +37,42 @@ public class Model extends Observable {
 		calcText = "";
 		paidSum = 0;
 
-		this.mockMode = mockMode;
-		
 		this.dbh = dbh;
 
-		mockInit();
-
 	}
 
-	private void mockInit() {
-		
-		voucherArrayMock = new ArrayList<Voucher>();
-		voucherArrayMock.add(new Voucher(1, "Rot", 1.1, Color.decode("#FF0004")));
-		voucherArrayMock.add(new Voucher(2, "Gelb", 1.1, Color.decode("#FFE32D")));
-		voucherArrayMock.add(new Voucher(3, "Grün", 1.1, Color.decode("#1AD839")));
-		voucherArrayMock.add(new Voucher(4, "Blau", 1.1, Color.decode("#1B15D6")));
-
-		productArrayMock = new ArrayList<Product>();
-		productArrayMock.add(new Product(1, "Steak", false, 1));
-		productArrayMock.add(new Product(2, "Wurst", false, 2));
-		productArrayMock.add(new Product(3, "Braten", false, 3));
-		productArrayMock.add(new Product(4, "Spätzle", false, 4));
-		productArrayMock.add(new Product(5, "Suppe", false, 1));
-		productArrayMock.add(new Product(6, "Kuchen", false, 2));
-		productArrayMock.add(new Product(7, "Bier", true, 3));
-		productArrayMock.add(new Product(8, "Radler", true, 4));
-		productArrayMock.add(new Product(9, "Cola", true, 1));
-		productArrayMock.add(new Product(10, "Spezi", true, 2));
-		productArrayMock.add(new Product(11, "Sprudel", true, 3));
-
-	}
-	
-	// Caching	
-	private void loadVoucherAndProductsIfNecessary(){
-		if (productCache == null || voucherCache==null){
+	// Caching
+	private void loadVoucherAndProductsIfNecessary() {
+		if (productCache == null || voucherCache == null) {
 			productCache = dbh.getAllProducts();
 			voucherCache = dbh.getAllVouchers();
-			
+
 			setChanged();
 			notifyObservers(new MasterDataChangedAlert(productCache, voucherCache));
 			clearChanged();
 		}
 	}
-	
-	public void invalidateCaches(){
-		productCache=null;
-		voucherCache=null;
-	}
-	
 
-	
-	//Voucher Getters
-	public ArrayList<Voucher> getAllVouchers() {
-		if (mockMode) {
-			return voucherArrayMock;
-		} else {
-			loadVoucherAndProductsIfNecessary();
-			return voucherCache;
-		}
+	public void invalidateCaches() {
+		productCache = null;
+		voucherCache = null;
 	}
-	
+
+	// Voucher Getters
+	public ArrayList<Voucher> getAllVouchers() {
+		loadVoucherAndProductsIfNecessary();
+		return voucherCache;
+	}
+
 	public Voucher getVoucherByName(String vName) {
 		for (int i = 0; i < getAllVouchers().size(); i++) {
-			if (getAllVouchers().get(i).getDescription().equals(vName)){
+			if (getAllVouchers().get(i).getDescription().equals(vName)) {
 				return getAllVouchers().get(i);
 			}
 		}
 		return null;
 	}
-	
+
 	public Voucher getVoucherById(int searchedId) {
 		ArrayList<Voucher> al = getAllVouchers();
 		for (int i = 0; i < al.size(); i++) {
@@ -118,18 +83,12 @@ public class Model extends Observable {
 		return null;
 	}
 
-
-	
-	//Product Getters
+	// Product Getters
 	public ArrayList<Product> getAllProducts() {
-		if (mockMode) {
-			return productArrayMock;
-		} else {
-			loadVoucherAndProductsIfNecessary();
-			return productCache;
-		}
+		loadVoucherAndProductsIfNecessary();
+		return productCache;
 	}
-	
+
 	public Product getProductById(int searchedId) {
 		ArrayList<Product> al = getAllProducts();
 		for (int i = 0; i < al.size(); i++) {
@@ -139,44 +98,27 @@ public class Model extends Observable {
 		}
 		return null;
 	}
-	
 
-	//Booking
+	// Booking
 	public void orderProduct(int productID) {
 
 		generateInvoiceIfMissing();
 
 		int vid;
 
-		if (mockMode) {
-			vid = productArrayMock.get(productID).getVoucherID();
-		} else {
-			vid = getProductById(productID).getVoucherID();
-		}
+		vid = getProductById(productID).getVoucherID();
 
 		if (calcText == "" || !calcText.substring(calcText.length() - 1).equals("X")) {
 
 			// einmal buchen
-			if (mockMode) {
-				currentInvoice.orderProduct(productID, vid, voucherArrayMock.get(vid - 1).getPrice(),
-						productArrayMock.get(productID - 1).getName());
-			} else {
-				currentInvoice.orderProduct(productID, vid, getVoucherById(vid).getPrice(),
-						getProductById(productID).getName());
-			}
+			currentInvoice.orderProduct(productID, vid, getVoucherById(vid).getPrice(),
+					getProductById(productID).getName());
 
 		} else {
-			
+
 			// Mehrfachbuchen
-			if (mockMode) {
-				currentInvoice.orderProduct(productID, vid,
-						Integer.parseInt(calcText.substring(0, calcText.length() - 2)),
-						voucherArrayMock.get(vid - 1).getPrice(), productArrayMock.get(productID - 1).getName());
-			} else {
-				currentInvoice.orderProduct(productID, vid,
-						Integer.parseInt(calcText.substring(0, calcText.length() - 2)),
-						getVoucherById(vid).getPrice(), getProductById(productID).getName());
-			}
+			currentInvoice.orderProduct(productID, vid, Integer.parseInt(calcText.substring(0, calcText.length() - 2)),
+					getVoucherById(vid).getPrice(), getProductById(productID).getName());
 		}
 
 		notifyInvoiceChange();
@@ -191,24 +133,13 @@ public class Model extends Observable {
 
 		if (calcText == "" || !calcText.substring(calcText.length() - 1).equals("X")) {
 			// einmal buchen
-			if (mockMode) {
-				currentInvoice.orderVoucher(voucherID, voucherArrayMock.get(voucherID - 1).getPrice(),
-						voucherArrayMock.get(voucherID - 1).getDescription());
-			} else {
-				currentInvoice.orderVoucher(voucherID, getVoucherById(voucherID).getPrice(),
-						getVoucherById(voucherID).getDescription());
-			}
+			currentInvoice.orderVoucher(voucherID, getVoucherById(voucherID).getPrice(),
+					getVoucherById(voucherID).getDescription());
 
 		} else {
 			// Mehrfachbuchen
-			if (mockMode) {
-				currentInvoice.orderVoucher(voucherID, Integer.parseInt(calcText.substring(0, calcText.length() - 2)),
-						voucherArrayMock.get(voucherID - 1).getPrice(),
-						voucherArrayMock.get(voucherID - 1).getDescription());
-			} else {
-				currentInvoice.orderVoucher(voucherID, Integer.parseInt(calcText.substring(0, calcText.length() - 2)),
-						getVoucherById(voucherID).getPrice(), getVoucherById(voucherID).getDescription());
-			}
+			currentInvoice.orderVoucher(voucherID, Integer.parseInt(calcText.substring(0, calcText.length() - 2)),
+					getVoucherById(voucherID).getPrice(), getVoucherById(voucherID).getDescription());
 		}
 
 		notifyInvoiceChange();
@@ -217,7 +148,7 @@ public class Model extends Observable {
 		deleteCalcValue();
 	}
 
-	//Calculator
+	// Calculator
 	public void addCalculatorNumber(int i) {
 		if (isValidNumberInStringCheck(calcText + i)) {
 			calcText = calcText + i;
@@ -244,25 +175,21 @@ public class Model extends Observable {
 		}
 		notifyCalcChange();
 	}
-	
+
 	private void notifyCalcChange() {
 		setChanged();
 		notifyObservers(new CalcFieldAlert(calcText));
 		clearChanged();
 	}
-	
-	//Invoice
+
+	// Invoice
 
 	private void generateInvoiceIfMissing() {
 		if (currentInvoice == null) {
-			if (mockMode) {
-				currentInvoice = new Invoice(1, voucherArrayMock.size());
-			} else {
-				currentInvoice = new Invoice(dbh.generateNewInvoice(), getAllVouchers().size());
-			}
+			currentInvoice = new Invoice(dbh.generateNewInvoice(), getAllVouchers().size());
 		}
 	}
-	
+
 	private void notifyInvoiceChange() {
 		setChanged();
 		notifyObservers(new InvoiceAlert(currentInvoice));
@@ -282,19 +209,15 @@ public class Model extends Observable {
 	public int getCurrentInvoiceLineCount() {
 		return currentInvoice.getInvoiceLines().size();
 	}
-	
+
 	public void saveAndInitInvoice() {
 		// Store Invoice
-		if (mockMode) {
-			//Do not store when in Mockmode
-		} else {
-			dbh.storeInvoice(currentInvoice);
-		}
+		dbh.storeInvoice(currentInvoice);
 
 		deleteAndInitNewInvoice();
 
 	}
-	
+
 	public void deleteAndInitNewInvoice() {
 
 		// Generate New Empty Invocie
@@ -306,9 +229,7 @@ public class Model extends Observable {
 		deletePaidSum();
 	}
 
-
-	
-	//Payment
+	// Payment
 	public void payUnroundSum() {
 		// Get Sum from CalcField and cast to double
 		double cash = 0;
@@ -357,15 +278,12 @@ public class Model extends Observable {
 		}
 	}
 
-
 	public void deletePaidSum() {
 		paidSum = 0;
 		notifySumChange();
 	}
 
-	
-	
-	//Util
+	// Util
 	private boolean isValidNumberInStringCheck(String s) {
 		try {
 			if (s.indexOf(',') > 0) {
@@ -386,16 +304,6 @@ public class Model extends Observable {
 
 	}
 
-	
-	//Mockmode
-	public boolean isMockMode() {
-		return mockMode;
-	}
-
-	public void setMockMode(boolean mockMode) {
-		this.mockMode = mockMode;
-	}
-
 	public void inactivateProduct(Product product) {
 		dbh.invalidateProductOrVocherInDB(product.getId(), "product");
 		invalidateCaches();
@@ -408,10 +316,10 @@ public class Model extends Observable {
 		loadVoucherAndProductsIfNecessary();
 	}
 
-	//gibt zurück ob Voucher noch bei einem Produkt angehängt ist.
+	// gibt zurück ob Voucher noch bei einem Produkt angehängt ist.
 	public boolean isVoucherDeletable(Voucher voucher) {
 		for (int i = 0; i < productCache.size(); i++) {
-			if (productCache.get(i).getVoucherID() == voucher.getId()){
+			if (productCache.get(i).getVoucherID() == voucher.getId()) {
 				return false;
 			}
 		}
