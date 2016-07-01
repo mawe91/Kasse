@@ -22,7 +22,6 @@ public class InvoiceSumPanel extends AbstractKassenPanel {
 	private JLabel jl1;
 	private JLabel jl2;
 	private JTextField jtfPayedSum;
-	private JLabel jlBonNummer;
 
 	public InvoiceSumPanel() {
 		format = new DecimalFormat("#0.00");
@@ -56,20 +55,9 @@ public class InvoiceSumPanel extends AbstractKassenPanel {
 		setConstraintSettings(0, 3, 0, 0, 1, 1);
 		jtfPayedSum.setVisible(false);
 		jtfPayedSum.setEditable(false);
-		add(jtfPayedSum, gbc);
-		
-		jlBonNummer = new JLabel("Rechnung:");
-		jlBonNummer.setFont(Variables.buttonAndComboFont);
-		jlBonNummer.setHorizontalAlignment(JTextField.CENTER);
-		setConstraintSettings(0, 4, 0, 0.1, 1, 1);
-		gbc.anchor = GridBagConstraints.SOUTH;
-		add(jlBonNummer, gbc);
-
+		add(jtfPayedSum, gbc);	
 	}
 	
-	public void updateInvoiceID(int id) {
-		jlBonNummer.setText("Rechnung: " + id);
-	}
 
 	public void updateInvoiceSum(double sum) {
 		jtfTotalSum.setText("" + format.format(sum) + " €");
@@ -93,9 +81,7 @@ public class InvoiceSumPanel extends AbstractKassenPanel {
 		jl1.setFont(buttonAndComboFont);
 		jl2.setFont(buttonAndComboFont);
 		jtfPayedSum.setFont(buttonAndComboFont);
-		jtfTotalSum.setFont(buttonAndComboFont);
-		jlBonNummer.setFont(buttonAndComboFont);
-				
+		jtfTotalSum.setFont(buttonAndComboFont);				
 	}
 
 }

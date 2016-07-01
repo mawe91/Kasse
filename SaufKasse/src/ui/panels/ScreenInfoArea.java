@@ -67,7 +67,6 @@ public class ScreenInfoArea extends JPanel {
 	public void updateAfterInvoiceChange(InvoiceAlert ia) {
 		orderListPanel.printInvoice(ia.getInvoice());
 		InvoiceSumPanel.updateInvoiceSum(ia.getInvoice().getInvoiceSum());
-		InvoiceSumPanel.updateInvoiceID(ia.getInvoice().getId());
 		voucherPanel.updateVoucherCount(ia.getInvoice().getVoucherCount());
 	}
 

@@ -8,13 +8,9 @@ public class Invoice {
 
 	private int id;
 	private ArrayList<InvoiceLine> invoiceLines;
-	private int voucherCount;
 
-	public Invoice(int id, int voucherNumber) {
-
-		this.id = id;
+	public Invoice() {
 		this.invoiceLines = new ArrayList<InvoiceLine>();
-		this.voucherCount=voucherNumber;
 	}
 
 	public int getId() {

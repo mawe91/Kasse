@@ -42,7 +42,7 @@ public class DBHandler {
 	private static final String CREATE_TABLE4 = "CREATE TABLE if not exists Product (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, voucher INTEGER NOT NULL REFERENCES Voucher (id), product_category INTEGER NOT NULL REFERENCES ProductCategory (id));";
 	private static final String CREATE_TABLE5 = "CREATE INDEX if not exists idx_product__product_category ON Product (product_category);";
 	private static final String CREATE_TABLE6 = "CREATE INDEX if not exists idx_product__voucher ON Product (voucher);";
-	private static final String CREATE_TABLE7 = "CREATE TABLE InvoiceLine (id INTEGER PRIMARY KEY AUTOINCREMENT, product INTEGER NOT NULL REFERENCES Product (id), count INTEGER NOT NULL, invoice INTEGER NOT NULL REFERENCES Invoice (id), voucher INTEGER NOT NULL REFERENCES Voucher (id));";
+	private static final String CREATE_TABLE7 = "CREATE TABLE InvoiceLine (id INTEGER PRIMARY KEY AUTOINCREMENT, product INTEGER REFERENCES Product (id), count INTEGER NOT NULL, invoice INTEGER NOT NULL REFERENCES Invoice (id), voucher INTEGER NOT NULL REFERENCES Voucher (id));";
 	private static final String CREATE_TABLE8 = "CREATE INDEX if not exists idx_invoiceline__invoice ON InvoiceLine (invoice);";
 	private static final String CREATE_TABLE9 = "CREATE INDEX if not exists idx_invoiceline__product ON InvoiceLine (product);";
 	private static final String CREATE_TABLE10 = "CREATE INDEX if not exists idx_invoiceline__product ON InvoiceLine (product);";
@@ -111,6 +111,7 @@ public class DBHandler {
 				stmt.execute(DATA_INIT_VOUCHER4);
 				stmt.execute(DATA_INIT_VOUCHER5);
 				stmt.execute(DATA_INIT_VOUCHER6);
+				stmt.execute(DATA_INIT_VOUCHER7);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

@@ -33,7 +33,7 @@ public class Model extends Observable {
 
 		super();
 
-		currentInvoice = null;
+		currentInvoice = new Invoice();
 		calcText = "";
 		paidSum = 0;
 
@@ -102,8 +102,6 @@ public class Model extends Observable {
 	// Booking
 	public void orderProduct(int productID) {
 
-		generateInvoiceIfMissing();
-
 		int vid;
 
 		vid = getProductById(productID).getVoucherID();
@@ -128,8 +126,6 @@ public class Model extends Observable {
 	}
 
 	public void orderVoucher(int voucherID) {
-
-		generateInvoiceIfMissing();
 
 		if (calcText == "" || !calcText.substring(calcText.length() - 1).equals("X")) {
 			// einmal buchen
@@ -182,14 +178,8 @@ public class Model extends Observable {
 		clearChanged();
 	}
 
-	// Invoice
-
-	private void generateInvoiceIfMissing() {
-		if (currentInvoice == null) {
-			currentInvoice = new Invoice(dbh.generateNewInvoice(), getAllVouchers().size());
-		}
-	}
-
+	
+//Invoice
 	private void notifyInvoiceChange() {
 		setChanged();
 		notifyObservers(new InvoiceAlert(currentInvoice));
@@ -221,8 +211,7 @@ public class Model extends Observable {
 	public void deleteAndInitNewInvoice() {
 
 		// Generate New Empty Invocie
-		currentInvoice = null;
-		generateInvoiceIfMissing();
+		currentInvoice = new Invoice();
 		notifyInvoiceChange();
 
 		// SetPaidSum to Zero
