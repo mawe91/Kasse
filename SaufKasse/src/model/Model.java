@@ -304,18 +304,6 @@ public class Model extends Observable {
 
 	}
 
-	public void inactivateProduct(Product product) {
-		dbh.invalidateProductOrVocherInDB(product.getId(), "product");
-		invalidateCaches();
-		loadVoucherAndProductsIfNecessary();
-	}
-
-	public void inactivateVoucher(Voucher voucher) {
-		dbh.invalidateProductOrVocherInDB(voucher.getId(), "voucher");
-		invalidateCaches();
-		loadVoucherAndProductsIfNecessary();
-	}
-
 	// gibt zurück ob Voucher noch bei einem Produkt angehängt ist.
 	public boolean isVoucherDeletable(Voucher voucher) {
 		for (int i = 0; i < productCache.size(); i++) {

@@ -30,8 +30,8 @@ public class DBHandler {
 	private static final String USER = "root";
 	private static final String PASS = "passwd";
 
-	private File dir = new File(System.getenv("APPDATA")+"\\Kasse");
-	
+	private File dir = new File(System.getenv("APPDATA") + "\\Kasse");
+
 	// Variables
 	private Connection connection;
 	private Statement stmt;
@@ -42,10 +42,11 @@ public class DBHandler {
 	private static final String CREATE_TABLE4 = "CREATE TABLE if not exists Product (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, voucher INTEGER NOT NULL REFERENCES Voucher (id), product_category INTEGER NOT NULL REFERENCES ProductCategory (id));";
 	private static final String CREATE_TABLE5 = "CREATE INDEX if not exists idx_product__product_category ON Product (product_category);";
 	private static final String CREATE_TABLE6 = "CREATE INDEX if not exists idx_product__voucher ON Product (voucher);";
-	private static final String CREATE_TABLE7 = "CREATE TABLE if not exists InvoiceLine ( id INTEGER PRIMARY KEY AUTOINCREMENT, product INTEGER NOT NULL REFERENCES Product (id), count INTEGER NOT NULL, invoice INTEGER NOT NULL REFERENCES Invoice (id));";
+	private static final String CREATE_TABLE7 = "CREATE TABLE InvoiceLine (id INTEGER PRIMARY KEY AUTOINCREMENT, product INTEGER NOT NULL REFERENCES Product (id), count INTEGER NOT NULL, invoice INTEGER NOT NULL REFERENCES Invoice (id), voucher INTEGER NOT NULL REFERENCES Voucher (id));";
 	private static final String CREATE_TABLE8 = "CREATE INDEX if not exists idx_invoiceline__invoice ON InvoiceLine (invoice);";
 	private static final String CREATE_TABLE9 = "CREATE INDEX if not exists idx_invoiceline__product ON InvoiceLine (product);";
-
+	private static final String CREATE_TABLE10 = "CREATE INDEX if not exists idx_invoiceline__product ON InvoiceLine (product);";
+	
 	private static final String DATA_INIT_VOUCHER1 = "INSERT INTO voucher (id, price, color, description) VALUES (1,3.0,'#FF0004','Bier ...');";
 	private static final String DATA_INIT_VOUCHER2 = "INSERT INTO voucher (id, price, color, description) VALUES (2,3.5,'#F0FFFF','Steak');";
 	private static final String DATA_INIT_VOUCHER3 = "INSERT INTO voucher (id, price, color, description) VALUES (3,2.5,'#C1FFC1','Weizenbier');";
@@ -90,7 +91,6 @@ public class DBHandler {
 			Class.forName("org.sqlite.JDBC");
 			connection = DriverManager.getConnection(DB_URL, USER, PASS);
 			stmt = connection.createStatement();
-			
 
 			// populate db if nessassary
 			stmt.execute(CREATE_TABLE1);
@@ -102,6 +102,7 @@ public class DBHandler {
 			stmt.execute(CREATE_TABLE7);
 			stmt.execute(CREATE_TABLE8);
 			stmt.execute(CREATE_TABLE9);
+			stmt.execute(CREATE_TABLE10);
 
 			try {
 				stmt.execute(DATA_INIT_VOUCHER1);
@@ -208,18 +209,36 @@ public class DBHandler {
 		return 0;
 	}
 
-	public void invalidateProductOrVocherInDB(int id, String string) {
-		// TODO Auto-generated method stub
-
-	}
-
 	public void saveNewVoucher(Voucher v) {
 		// TODO Auto-generated method stub
 
 	}
 
-	public void storeInvoice(Invoice currentInvoice) {
-		// TODO Auto-generated method stub
+	public void storeInvoice(Invoice invoice) {
+		
+		for (int i = 0; i < invoice.getInvoiceLines().size(); i++) {
+			if (invoice.getInvoiceLines().get(i).getCount() != 0) {
+
+				String sqlInsert;
+				if (invoice.getInvoiceLines().get(i).getProductID() == 0) {
+					sqlInsert = "INSERT INTO invoiceline (count, invoice, voucher) VALUES ("
+							+ invoice.getInvoiceLines().get(i).getCount() + ", " + invoice.getId() + ", "
+							+ invoice.getInvoiceLines().get(i).getVoucherID() + ")";
+				} else {
+					sqlInsert = "INSERT INTO invoiceline (product, count, invoice, voucher) VALUES ("
+							+ invoice.getInvoiceLines().get(i).getProductID() + ", "
+							+ invoice.getInvoiceLines().get(i).getCount() + ", " + invoice.getId() + ", "
+							+ invoice.getInvoiceLines().get(i).getVoucherID() + ")";
+				}
+
+				try {
+					stmt.executeUpdate(sqlInsert);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
 
 	}
 
@@ -354,33 +373,6 @@ public class DBHandler {
 	 * 
 	 * disconnect(); } }
 	 * 
-	 * public void saveNewVoucher(Voucher v) { Connection conn = connect();
-	 * Statement stmt = null; try { stmt = conn.createStatement(); Color vcol =
-	 * v.getColor(); String sqlInsert; sqlInsert =
-	 * "INSERT INTO voucher (price, description, color, isActive) VALUES (" +
-	 * v.getPrice() + ", '" + v.getDescription() + "', '" +
-	 * String.format("#%02x%02x%02x", vcol.getRed(), vcol.getGreen(),
-	 * vcol.getBlue()) + "', " + true + ")"; System.out.println(sqlInsert);
-	 * stmt.executeUpdate(sqlInsert);
-	 * 
-	 * // Clean-up environment stmt.close(); disconnect();
-	 * 
-	 * } catch (
-	 * 
-	 * SQLException se)
-	 * 
-	 * { // Handle errors for JDBC se.printStackTrace(); } catch (
-	 * 
-	 * Exception e)
-	 * 
-	 * { // Handle errors for Class.forName e.printStackTrace(); } finally
-	 * 
-	 * { // finally block used to close resources try { if (stmt != null)
-	 * stmt.close(); } catch (SQLException se2) { } // nothing we can do
-	 * 
-	 * disconnect(); }
-	 * 
-	 * }
 	 * 
 	 */
 
