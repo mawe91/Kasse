@@ -113,7 +113,6 @@ public class DBHandler {
 				stmt.execute(DATA_INIT_VOUCHER6);
 				stmt.execute(DATA_INIT_VOUCHER7);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
@@ -123,7 +122,6 @@ public class DBHandler {
 				stmt.execute(DATA_INIT_ProductCategory3);
 				stmt.execute(DATA_INIT_ProductCategory4);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
@@ -147,7 +145,7 @@ public class DBHandler {
 				stmt.execute(DATA_INIT_Product17);
 
 			} catch (Exception e) {
-				// TODO: handle exception
+				e.printStackTrace();
 			}
 
 			System.out.println();
@@ -171,8 +169,8 @@ public class DBHandler {
 				p = new Product(id, name, productCategory, voucher);
 				productList.add(p);
 			}
+			rs.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return productList;
@@ -197,10 +195,9 @@ public class DBHandler {
 				voucherList.add(v);
 
 			}
+			rs.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-
 		}
 		return voucherList;
 	}
@@ -222,7 +219,6 @@ public class DBHandler {
 			// }
 			// invoice.setId(invId);
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 
@@ -244,7 +240,6 @@ public class DBHandler {
 				try {
 					stmt.executeUpdate(sqlInsert);
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
