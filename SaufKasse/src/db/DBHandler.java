@@ -7,12 +7,9 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import org.apache.logging.log4j.spi.LoggerContextFactory;
 
 import beans.Invoice;
 import beans.Product;
