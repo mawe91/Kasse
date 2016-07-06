@@ -178,8 +178,7 @@ public class Model extends Observable {
 		clearChanged();
 	}
 
-	
-//Invoice
+	// Invoice
 	private void notifyInvoiceChange() {
 		setChanged();
 		notifyObservers(new InvoiceAlert(currentInvoice));
@@ -259,12 +258,9 @@ public class Model extends Observable {
 	}
 
 	public boolean isPaidSumBiggerThanInvoiceSum() {
-		// Wenn InvoiceSum kleiner bezahltem Betrag
-		if (currentInvoice.getInvoiceSum() - paidSum <= 0) {
-			return true;
-		} else {
-			return false;
-		}
+
+		return currentInvoice.getInvoiceSum() - paidSum <= 0;
+
 	}
 
 	public void deletePaidSum() {
@@ -302,11 +298,4 @@ public class Model extends Observable {
 		}
 		return true;
 	}
-
-	public void saveNewVoucherAndRevalidateCaches(Voucher v) {
-		dbh.saveNewVoucher(v);
-		invalidateCaches();
-		loadVoucherAndProductsIfNecessary();
-	}
-
 }

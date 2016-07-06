@@ -42,11 +42,11 @@ public class DBHandler {
 	private static final String CREATE_TABLE4 = "CREATE TABLE if not exists Product (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, voucher INTEGER NOT NULL REFERENCES Voucher (id), product_category INTEGER NOT NULL REFERENCES ProductCategory (id));";
 	private static final String CREATE_TABLE5 = "CREATE INDEX if not exists idx_product__product_category ON Product (product_category);";
 	private static final String CREATE_TABLE6 = "CREATE INDEX if not exists idx_product__voucher ON Product (voucher);";
-	private static final String CREATE_TABLE7 = "CREATE TABLE InvoiceLine (id INTEGER PRIMARY KEY AUTOINCREMENT, product INTEGER REFERENCES Product (id), count INTEGER NOT NULL, invoice INTEGER NOT NULL REFERENCES Invoice (id), voucher INTEGER NOT NULL REFERENCES Voucher (id));";
+	private static final String CREATE_TABLE7 = "CREATE TABLE if not exists InvoiceLine (id INTEGER PRIMARY KEY AUTOINCREMENT, product INTEGER REFERENCES Product (id), count INTEGER NOT NULL, invoice INTEGER NOT NULL REFERENCES Invoice (id), voucher INTEGER NOT NULL REFERENCES Voucher (id));";
 	private static final String CREATE_TABLE8 = "CREATE INDEX if not exists idx_invoiceline__invoice ON InvoiceLine (invoice);";
 	private static final String CREATE_TABLE9 = "CREATE INDEX if not exists idx_invoiceline__product ON InvoiceLine (product);";
 	private static final String CREATE_TABLE10 = "CREATE INDEX if not exists idx_invoiceline__product ON InvoiceLine (product);";
-	
+
 	private static final String DATA_INIT_VOUCHER1 = "INSERT INTO voucher (id, price, color, description) VALUES (1,3.0,'#FF0004','Bier ...');";
 	private static final String DATA_INIT_VOUCHER2 = "INSERT INTO voucher (id, price, color, description) VALUES (2,3.5,'#F0FFFF','Steak');";
 	private static final String DATA_INIT_VOUCHER3 = "INSERT INTO voucher (id, price, color, description) VALUES (3,2.5,'#C1FFC1','Weizenbier');";
@@ -70,13 +70,13 @@ public class DBHandler {
 	private static final String DATA_INIT_Product8 = "INSERT INTO product (id, name, voucher, product_category) VALUES (8,'Bluna',5,2);";
 	private static final String DATA_INIT_Product9 = "INSERT INTO product (id, name, voucher, product_category) VALUES (9,'Sprudel',5,2);";
 	private static final String DATA_INIT_Product10 = "INSERT INTO product (id, name, voucher, product_category) VALUES (10,'Apfelschorle',4,2);";
-	private static final String DATA_INIT_Product11 = "INSERT INTO product (id, name, voucher, product_category) VALUES (11,'Wein',6,3);";
-	private static final String DATA_INIT_Product12 = "INSERT INTO product (id, name, voucher, product_category) VALUES (12,'Sekt',6,3);";
+	private static final String DATA_INIT_Product11 = "INSERT INTO product (id, name, voucher, product_category) VALUES (11,'Fl. Wein',6,3);";
+	private static final String DATA_INIT_Product12 = "INSERT INTO product (id, name, voucher, product_category) VALUES (12,'Fl. Sekt',6,3);";
 	private static final String DATA_INIT_Product13 = "INSERT INTO product (id, name, voucher, product_category) VALUES (13,'Rote',1,4);";
 	private static final String DATA_INIT_Product14 = "INSERT INTO product (id, name, voucher, product_category) VALUES (14,'Curry Wurst',1,4);";
 	private static final String DATA_INIT_Product15 = "INSERT INTO product (id, name, voucher, product_category) VALUES (15,'Schnitzel',2,4);";
 	private static final String DATA_INIT_Product16 = "INSERT INTO product (id, name, voucher, product_category) VALUES (16,'Pommes',4,4);";
-	private static final String DATA_INIT_Product17 = "INSERT INTO product (id, name, voucher, product_category) VALUES (17,'Mittagessen',1,7);";
+	private static final String DATA_INIT_Product17 = "INSERT INTO product (id, name, voucher, product_category) VALUES (17,'Mittagessen',7,4);";
 
 	private static final String GET_PRODUCTS = "SELECT * FROM product;";
 	private static final String GET_VOUCHERS = "SELECT * FROM voucher;";
@@ -205,18 +205,27 @@ public class DBHandler {
 		return voucherList;
 	}
 
-	public int generateNewInvoice() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public void saveNewVoucher(Voucher v) {
-		// TODO Auto-generated method stub
-
-	}
-
 	public void storeInvoice(Invoice invoice) {
-		
+
+		try {
+			stmt.executeUpdate("INSERT INTO invoice (timestamp) VALUES (CURRENT_TIMESTAMP)");
+
+			ResultSet rs = stmt.executeQuery("select last_insert_id() as last_id from invoice");
+			rs.next();
+			int lastid = rs.getInt("last_id");
+			System.out.println(""+lastid);
+			
+			// ResultSet rs = stmt.getGeneratedKeys();
+			// int invId = 0;
+			// while (rs.next()) {
+			// invId = rs.getInt(1);
+			// }
+			// invoice.setId(invId);
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
 		for (int i = 0; i < invoice.getInvoiceLines().size(); i++) {
 			if (invoice.getInvoiceLines().get(i).getCount() != 0) {
 
