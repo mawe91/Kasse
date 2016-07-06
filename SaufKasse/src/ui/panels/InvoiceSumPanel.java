@@ -7,9 +7,10 @@ import java.text.DecimalFormat;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
+import interfaces.PaySellingChangerInterface;
 import utilities.Variables;
 
-public class InvoiceSumPanel extends AbstractKassenPanel {
+public class InvoiceSumPanel extends AbstractKassenPanel implements PaySellingChangerInterface{
 
 	/**
 	 * 

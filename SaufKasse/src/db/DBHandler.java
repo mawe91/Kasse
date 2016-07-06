@@ -88,7 +88,7 @@ public class DBHandler {
 
 	private void openConnection() {
 		try {
-			Class.forName("org.sqlite.JDBC");
+			Class.forName(JDBC_DRIVER);
 			connection = DriverManager.getConnection(DB_URL, USER, PASS);
 			stmt = connection.createStatement();
 

@@ -59,16 +59,6 @@ public class VoucherPanel extends AbstractKassenPanel {
 
 	}
 
-	public void changeToPayMode() {
-		// TODO Auto-generated method stub
-
-	}
-
-	public void changeToSellingMode() {
-		// TODO Auto-generated method stub
-
-	}
-
 	public void changeFont(Font buttonAndComboFont) {
 		for (int i = 0; i < voucherLabels.size(); i++) {
 			voucherLabels.get(i).setFont(buttonAndComboFont);

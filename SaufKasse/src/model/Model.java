@@ -1,6 +1,5 @@
 package model;
 
-import java.awt.Color;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -20,9 +19,6 @@ public class Model extends Observable {
 	private Invoice currentInvoice;
 	private String calcText;
 	private double paidSum;
-
-	private ArrayList<Voucher> voucherArrayMock;
-	private ArrayList<Product> productArrayMock;
 
 	private ArrayList<Voucher> voucherCache;
 	private ArrayList<Product> productCache;

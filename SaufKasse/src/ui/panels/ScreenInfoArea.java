@@ -21,7 +21,7 @@ public class ScreenInfoArea extends JPanel {
 	
 	OrderListPanel orderListPanel;
 	VoucherPanel voucherPanel;
-	InvoiceSumPanel InvoiceSumPanel;
+	InvoiceSumPanel invoiceSumPanel;
 
 	public ScreenInfoArea(Controller controller) {
 
@@ -34,8 +34,8 @@ public class ScreenInfoArea extends JPanel {
 		add(orderListPanel);
 
 		// sumAndDeletePanel
-		InvoiceSumPanel = new InvoiceSumPanel();
-		add(InvoiceSumPanel);
+		invoiceSumPanel = new InvoiceSumPanel();
+		add(invoiceSumPanel);
 		
 		// VoucherPanel
 		voucherPanel = new VoucherPanel();
@@ -48,16 +48,11 @@ public class ScreenInfoArea extends JPanel {
 	}
 
 	public void changeToPayMode() {
-		orderListPanel.changeToPayMode();
-		InvoiceSumPanel.changeToPayMode();
-		voucherPanel.changeToPayMode();
+		invoiceSumPanel.changeToPayMode();
 	}
 
 	public void changeToSellingMode() {
-		orderListPanel.changeToSellingMode();
-		InvoiceSumPanel.changeToSellingMode();
-		voucherPanel.changeToSellingMode();
-		
+		invoiceSumPanel.changeToSellingMode();		
 	}
 
 	public int getSelectedTableRow() {
@@ -66,19 +61,19 @@ public class ScreenInfoArea extends JPanel {
 	
 	public void updateAfterInvoiceChange(InvoiceAlert ia) {
 		orderListPanel.printInvoice(ia.getInvoice());
-		InvoiceSumPanel.updateInvoiceSum(ia.getInvoice().getInvoiceSum());
+		invoiceSumPanel.updateInvoiceSum(ia.getInvoice().getInvoiceSum());
 		voucherPanel.updateVoucherCount(ia.getInvoice().getVoucherCount());
 	}
 
 	public void updateAfterPaidSumChanged(OpenSumAlert psa) {
 
-		InvoiceSumPanel.updateOpenSum(psa.getOpenSum());
+		invoiceSumPanel.updateOpenSum(psa.getOpenSum());
 		
 	}
 
 	public void changeFont(Font buttonAndComboFont) {
 		orderListPanel.changeFont(buttonAndComboFont);
-		InvoiceSumPanel.changeFont(buttonAndComboFont);
+		invoiceSumPanel.changeFont(buttonAndComboFont);
 		voucherPanel.changeFont(buttonAndComboFont);
 	}
 

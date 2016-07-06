@@ -8,9 +8,10 @@ import javax.swing.JButton;
 import beans.Product;
 import beans.Voucher;
 import controller.Controller;
+import interfaces.PaySellingChangerInterface;
 import utilities.Variables;
 
-public class OrderButtonPanel extends AbstractKassenPanel {
+public class OrderButtonPanel extends AbstractKassenPanel implements PaySellingChangerInterface{
 
 	/**
 	 * 

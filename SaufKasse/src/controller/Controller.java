@@ -3,7 +3,6 @@ package controller;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemListener;
 
 import javax.swing.DefaultListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
@@ -12,9 +11,6 @@ import javax.swing.event.ListSelectionListener;
 import model.Model;
 import ui.view.View;
 import utilities.Variables;
-
-import beans.Product;
-import beans.Voucher;
 
 public class Controller implements ActionListener, ListSelectionListener {
 
