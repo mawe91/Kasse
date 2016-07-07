@@ -76,8 +76,10 @@ public class OrderListPanel extends AbstractKassenPanel {
 		if (inv != null) {
 			for (int i = inv.getInvoiceLines().size(); i > 0; i--) {
 				InvoiceLine il = inv.getInvoiceLines().get(i - 1);
+				String name = il.getVoucherOrProductName();
+				name =  name.replace("<br>", " ");
 				orderTableModel.addRow(
-						new Object[] { il.getVoucherOrProductName(), "" + il.getCount() });
+						new Object[] { name, "" + il.getCount() });
 
 			}
 
