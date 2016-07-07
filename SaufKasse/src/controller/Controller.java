@@ -66,7 +66,7 @@ public class Controller implements ActionListener, ListSelectionListener {
 						return;
 					}
 				} catch (NumberFormatException e) {
-					e.printStackTrace();
+					
 				}
 			}
 			if (arg0.getActionCommand() == ",") {
