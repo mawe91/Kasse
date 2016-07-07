@@ -64,6 +64,8 @@ public class OrderButtonPanel extends AbstractKassenPanel implements PaySellingC
 			Voucher voucher = alv.get(i);
 			buttonToAdd = generateNewJButton(voucher.getDescription(), listener, font);
 			setConstraintSettings(3, i, 0.5, 0.5, 1, 1);
+			buttonToAdd.setBackground(voucher.getColor());
+			buttonToAdd.setHorizontalAlignment(JButton.CENTER);
 			uiElements.add(buttonToAdd);
 			add(buttonToAdd, gbc);
 
