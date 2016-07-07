@@ -25,8 +25,6 @@ public class VoucherPanel extends AbstractKassenPanel {
 
 		// Implementation of Voucher
 		voucherAl = new ArrayList<Voucher>();
-
-		// setBorder(getNewTitledBorder(""));
 	}
 
 	public void updateVoucherCount(Map<Integer, Integer> voucherMap) {
