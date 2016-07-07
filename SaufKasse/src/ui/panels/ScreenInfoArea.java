@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import javax.swing.JPanel;
 
 import alertobjects.InvoiceAlert;
-import alertobjects.MasterDataChangedAlert;
 import alertobjects.OpenSumAlert;
 import beans.Voucher;
 import controller.Controller;
@@ -76,12 +75,4 @@ public class ScreenInfoArea extends JPanel {
 		invoiceSumPanel.changeFont(buttonAndComboFont);
 		voucherPanel.changeFont(buttonAndComboFont);
 	}
-
-	public void updateVoucherView(MasterDataChangedAlert mdca) {
-
-		voucherPanel.repaintVoucherViewWithNewVoucherData(mdca.getVoucherList());
-	}
-
-	
-
 }

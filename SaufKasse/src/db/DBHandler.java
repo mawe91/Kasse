@@ -39,15 +39,14 @@ public class DBHandler {
 	private static final String CREATE_TABLE7 = "CREATE TABLE InvoiceLine (id INTEGER PRIMARY KEY AUTOINCREMENT, product INTEGER REFERENCES Product (id), count INTEGER NOT NULL, invoice INTEGER NOT NULL REFERENCES Invoice (id), voucher INTEGER NOT NULL REFERENCES Voucher (id));";
 	private static final String CREATE_TABLE8 = "CREATE INDEX idx_invoiceline__invoice ON InvoiceLine (invoice);";
 	private static final String CREATE_TABLE9 = "CREATE INDEX idx_invoiceline__product ON InvoiceLine (product);";
-	private static final String CREATE_TABLE10 = "CREATE INDEX idx_invoiceline__product ON InvoiceLine (product);";
 
-	private static final String DATA_INIT_VOUCHER1 = "INSERT INTO voucher (id, price, color, description) VALUES (1,3.0,'#FF0004','Bier ...');";
+	private static final String DATA_INIT_VOUCHER1 = "INSERT INTO voucher (id, price, color, description) VALUES (1,3.0,'#FF0004','<html>Bier - Schorle<br>Rote Wurst<br>Curry Wurst</html>');";
 	private static final String DATA_INIT_VOUCHER2 = "INSERT INTO voucher (id, price, color, description) VALUES (2,3.5,'#F0FFFF','Steak');";
 	private static final String DATA_INIT_VOUCHER3 = "INSERT INTO voucher (id, price, color, description) VALUES (3,2.5,'#C1FFC1','Weizenbier');";
-	private static final String DATA_INIT_VOUCHER4 = "INSERT INTO voucher (id, price, color, description) VALUES (4,2.0,'#FFD700','Spezi ...');";
-	private static final String DATA_INIT_VOUCHER5 = "INSERT INTO voucher (id, price, color, description) VALUES (5,1.7,'#4876FF','Cola ...');";
+	private static final String DATA_INIT_VOUCHER4 = "INSERT INTO voucher (id, price, color, description) VALUES (4,2.0,'#FFD700','<html>Spezi<br>Apfelschorle</html>');";
+	private static final String DATA_INIT_VOUCHER5 = "INSERT INTO voucher (id, price, color, description) VALUES (5,1.7,'#4876FF','Cola, Bluna, Sprudel');";
 	private static final String DATA_INIT_VOUCHER6 = "INSERT INTO voucher (id, price, color, description) VALUES (6,12.0,'#FFC1C1','Wein');";
-	private static final String DATA_INIT_VOUCHER7 = "INSERT INTO voucher (id, price, color, description) VALUES (7,9.0,'#FFC1C1','Wein(Mittag)');";
+	private static final String DATA_INIT_VOUCHER7 = "INSERT INTO voucher (id, price, color, description) VALUES (7,9.0,'#FFC1C1','<html>Wein<br>(Mittagessen)</html>');";
 
 	private static final String DATA_INIT_ProductCategory1 = "INSERT INTO productcategory (id, description) VALUES (1,'Alkohol');";
 	private static final String DATA_INIT_ProductCategory2 = "INSERT INTO productcategory (id, description) VALUES (2,'Alkoholfrei');";
@@ -66,7 +65,7 @@ public class DBHandler {
 	private static final String DATA_INIT_Product10 = "INSERT INTO product (id, name, voucher, product_category) VALUES (10,'Apfelschorle',4,2);";
 	private static final String DATA_INIT_Product11 = "INSERT INTO product (id, name, voucher, product_category) VALUES (11,'Fl. Wein',6,3);";
 	private static final String DATA_INIT_Product12 = "INSERT INTO product (id, name, voucher, product_category) VALUES (12,'Fl. Sekt',6,3);";
-	private static final String DATA_INIT_Product13 = "INSERT INTO product (id, name, voucher, product_category) VALUES (13,'Rote',1,4);";
+	private static final String DATA_INIT_Product13 = "INSERT INTO product (id, name, voucher, product_category) VALUES (13,'Rote Wurst',1,4);";
 	private static final String DATA_INIT_Product14 = "INSERT INTO product (id, name, voucher, product_category) VALUES (14,'Curry Wurst',1,4);";
 	private static final String DATA_INIT_Product15 = "INSERT INTO product (id, name, voucher, product_category) VALUES (15,'Schnitzel',2,4);";
 	private static final String DATA_INIT_Product16 = "INSERT INTO product (id, name, voucher, product_category) VALUES (16,'Pommes',4,4);";
@@ -97,7 +96,6 @@ public class DBHandler {
 			stmt.execute(CREATE_TABLE7);
 			stmt.execute(CREATE_TABLE8);
 			stmt.execute(CREATE_TABLE9);
-			stmt.execute(CREATE_TABLE10);
 
 			// Voucher Init
 			stmt.execute(DATA_INIT_VOUCHER1);

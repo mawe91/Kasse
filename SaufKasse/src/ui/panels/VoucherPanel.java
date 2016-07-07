@@ -25,15 +25,25 @@ public class VoucherPanel extends AbstractKassenPanel {
 
 		// Implementation of Voucher
 		voucherAl = new ArrayList<Voucher>();
-
-		// setBorder(getNewTitledBorder(""));
 	}
 
+	//achtung fieser hack
+	//Wil ein Märckchen 2 Voucher hat
 	public void updateVoucherCount(Map<Integer, Integer> voucherMap) {
+		
 		for (int i = 0; i < voucherLabels.size(); i++) {
+			System.out.println(voucherLabels.size());
 			Integer vIDCount = voucherMap.get(i + 1);
 			if (vIDCount == null) {
 				vIDCount = 0;
+			}
+			if (i == voucherLabels.size()-1){
+				if (voucherMap.get(i+2) == null) {
+					//nothing to add
+				} else {
+					vIDCount = vIDCount + voucherMap.get(i+2);
+				}
+				
 			}
 			voucherLabels.get(i).setText("" + vIDCount);
 		}
@@ -42,7 +52,8 @@ public class VoucherPanel extends AbstractKassenPanel {
 
 	public void initialize(ArrayList<Voucher> alv) {
 
-		for (int i = 0; i < alv.size(); i++) {
+		//exclude Mittag als extra märkchen
+		for (int i = 0; i < alv.size()-1; i++) {
 			setConstraintSettings(0, i, 0.5, 0.5, 1, 1);
 			JLabel jl = new JLabel("0");
 			jl.setHorizontalAlignment(JLabel.CENTER);
@@ -63,13 +74,6 @@ public class VoucherPanel extends AbstractKassenPanel {
 		for (int i = 0; i < voucherLabels.size(); i++) {
 			voucherLabels.get(i).setFont(buttonAndComboFont);
 		}
-	}
-
-	public void repaintVoucherViewWithNewVoucherData(ArrayList<Voucher> voucherList) {
-		removeAll();
-		initialize(voucherList);
-		repaint();
-		revalidate();
 	}
 
 }

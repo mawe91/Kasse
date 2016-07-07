@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import javax.swing.JPanel;
 
 import alertobjects.CalcFieldAlert;
-import alertobjects.MasterDataChangedAlert;
 import beans.Product;
 import beans.Voucher;
 import controller.Controller;
@@ -80,10 +79,6 @@ public class ScreenControlArea extends JPanel{
 		orderButtonPanel.changeFont(buttonAndComboFont);
 		calculaterPanel.changeFont(buttonAndComboFont);
 		paymentPanel.changeFont(buttonAndComboFont);
-	}
-
-	public void updateOrderButtons(MasterDataChangedAlert mdca) {
-		orderButtonPanel.initialize(mdca.getProductList(), mdca.getVoucherList());
 	}
 
 }
