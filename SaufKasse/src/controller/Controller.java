@@ -41,9 +41,6 @@ public class Controller implements ActionListener, ListSelectionListener {
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 
-		System.out.println(arg0);
-		System.out.println(arg0.getActionCommand());
-
 			// order products
 			for (int i = 0; i < model.getAllProducts().size(); i++) {
 				if (arg0.getActionCommand() == model.getAllProducts().get(i).getName()) {
@@ -69,7 +66,7 @@ public class Controller implements ActionListener, ListSelectionListener {
 						return;
 					}
 				} catch (NumberFormatException e) {
-					// e.printStackTrace();
+					
 				}
 			}
 			if (arg0.getActionCommand() == ",") {

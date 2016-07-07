@@ -54,7 +54,10 @@ public class Invoice {
 		
 		for (int i = 0; i < invoiceLines.size(); i++) {
 			Integer freq = myMap.get(invoiceLines.get(i).getVoucherID());
-			myMap.put(invoiceLines.get(i).getVoucherID(), (freq == null) ? 1 : freq + invoiceLines.get(i).getCount());
+			if (freq == null){
+				freq = 0;
+			}
+			myMap.put(invoiceLines.get(i).getVoucherID(), freq + invoiceLines.get(i).getCount());
 		}
 
 		return myMap;
