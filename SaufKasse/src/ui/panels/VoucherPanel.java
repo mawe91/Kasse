@@ -32,7 +32,6 @@ public class VoucherPanel extends AbstractKassenPanel {
 	public void updateVoucherCount(Map<Integer, Integer> voucherMap) {
 		
 		for (int i = 0; i < voucherLabels.size(); i++) {
-			System.out.println(voucherLabels.size());
 			Integer vIDCount = voucherMap.get(i + 1);
 			if (vIDCount == null) {
 				vIDCount = 0;
