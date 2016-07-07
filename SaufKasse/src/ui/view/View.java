@@ -14,7 +14,6 @@ import javax.swing.*;
 
 import alertobjects.CalcFieldAlert;
 import alertobjects.InvoiceAlert;
-import alertobjects.MasterDataChangedAlert;
 import alertobjects.OpenSumAlert;
 import beans.Product;
 import beans.Voucher;
@@ -125,10 +124,6 @@ public class View extends JFrame implements Observer {
 		} else if (arg.getClass().equals(OpenSumAlert.class)) {
 			OpenSumAlert psa = (OpenSumAlert) arg;
 			infoTopArea.updateAfterPaidSumChanged(psa);
-		} else if (arg.getClass().equals(MasterDataChangedAlert.class)){
-			MasterDataChangedAlert mdca = (MasterDataChangedAlert) arg;
-			buttonButtomPanel.updateOrderButtons(mdca);
-			infoTopArea.updateVoucherView(mdca);
 		}
 
 	}

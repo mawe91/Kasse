@@ -7,7 +7,6 @@ import java.util.Observable;
 
 import alertobjects.CalcFieldAlert;
 import alertobjects.InvoiceAlert;
-import alertobjects.MasterDataChangedAlert;
 import alertobjects.OpenSumAlert;
 import beans.Invoice;
 import beans.Product;
@@ -42,10 +41,6 @@ public class Model extends Observable {
 		if (productCache == null || voucherCache == null) {
 			productCache = dbh.getAllProducts();
 			voucherCache = dbh.getAllVouchers();
-
-			setChanged();
-			notifyObservers(new MasterDataChangedAlert(productCache, voucherCache));
-			clearChanged();
 		}
 	}
 

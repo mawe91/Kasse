@@ -63,11 +63,4 @@ public class VoucherPanel extends AbstractKassenPanel {
 		}
 	}
 
-	public void repaintVoucherViewWithNewVoucherData(ArrayList<Voucher> voucherList) {
-		removeAll();
-		initialize(voucherList);
-		repaint();
-		revalidate();
-	}
-
 }
