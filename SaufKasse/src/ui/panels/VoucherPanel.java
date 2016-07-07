@@ -33,7 +33,6 @@ public class VoucherPanel extends AbstractKassenPanel {
 		
 		
 		for (int i = 0; i < voucherLabels.size(); i++) {
-			System.out.println("Map Value "+ (i+1) + ": " + voucherMap.get(i+1));
 			Integer vIDCount = voucherMap.get(i + 1);
 			if (vIDCount == null) {
 				vIDCount = 0;
