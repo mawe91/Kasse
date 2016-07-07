@@ -79,12 +79,7 @@ public class View extends JFrame implements Observer {
 		menuItem.setFont(Variables.menuFont);
 		menuItem.addActionListener(handler);
 		menu.add(menuItem);
-				
-		//menuItem = new JMenuItem("Stammdaten");
-		//menuItem.addActionListener(handler);
-		//menuItem.setFont(Variables.menuFont);
-		//menu.add(menuItem);
-		
+
 		this.setJMenuBar(menuBar);
 	}
 

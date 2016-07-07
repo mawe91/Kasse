@@ -8,9 +8,10 @@ import javax.swing.JButton;
 import beans.Product;
 import beans.Voucher;
 import controller.Controller;
+import interfaces.PaySellingChangerInterface;
 import utilities.Variables;
 
-public class OrderButtonPanel extends AbstractKassenPanel {
+public class OrderButtonPanel extends AbstractKassenPanel implements PaySellingChangerInterface{
 
 	/**
 	 * 
@@ -32,8 +33,9 @@ public class OrderButtonPanel extends AbstractKassenPanel {
 		
 		Font font = Variables.buttonAndComboFont;
 
-		int addedButtonsFirstCol = 0;
-		int addedButtonsSecondCol = 0;
+		int addedButtonsAlcCol = 0;
+		int addedButtonsAlcFreeCol = 0;
+		int addedButtonsMealCol = 0;
 
 		JButton buttonToAdd;
 
@@ -43,12 +45,15 @@ public class OrderButtonPanel extends AbstractKassenPanel {
 
 			buttonToAdd = generateNewJButton(product.getName(), listener, font);
 
-			if (product.isDrink()) {
-				setConstraintSettings(0, addedButtonsFirstCol, 0.5, 0.5, 1, 1);
-				addedButtonsFirstCol++;
-			} else {
-				setConstraintSettings(1, addedButtonsSecondCol, 0.5, 0.5, 1, 1);
-				addedButtonsSecondCol++;
+			if (product.getProdCat()==1 || product.getProdCat()==3) {
+				setConstraintSettings(0, addedButtonsAlcCol, 0.5, 0.5, 1, 1);
+				addedButtonsAlcCol++;
+			} else if (product.getProdCat() == 2){
+				setConstraintSettings(1, addedButtonsAlcFreeCol, 0.5, 0.5, 1, 1);
+				addedButtonsAlcFreeCol++;
+			} else if (product.getProdCat() ==4 ){
+				setConstraintSettings(2, addedButtonsMealCol, 0.5, 0.5, 1, 1);
+				addedButtonsMealCol++;				
 			}
 
 			uiElements.add(buttonToAdd);
@@ -58,7 +63,7 @@ public class OrderButtonPanel extends AbstractKassenPanel {
 		for (int i = 0; i < alv.size(); i++) {
 			Voucher voucher = alv.get(i);
 			buttonToAdd = generateNewJButton(voucher.getDescription(), listener, font);
-			setConstraintSettings(2, i, 0.5, 0.5, 1, 1);
+			setConstraintSettings(3, i, 0.5, 0.5, 1, 1);
 			uiElements.add(buttonToAdd);
 			add(buttonToAdd, gbc);
 

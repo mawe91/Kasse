@@ -8,9 +8,10 @@ import javax.swing.JComponent;
 import javax.swing.JTextField;
 
 import controller.Controller;
+import interfaces.PaySellingChangerInterface;
 import utilities.Variables;
 
-public class CalculatorPanel extends AbstractKassenPanel {
+public class CalculatorPanel extends AbstractKassenPanel implements PaySellingChangerInterface{
 
 	/**
 	 * 

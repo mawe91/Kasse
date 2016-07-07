@@ -69,7 +69,6 @@ public class ScreenControlArea extends JPanel{
 	}
 
 	public void setZeilenstornoEnabled(boolean b) {
-		// TODO Auto-generated method stub
 		paymentPanel.setZeilenstornoEnabled(b);
 	}
 
@@ -84,7 +83,6 @@ public class ScreenControlArea extends JPanel{
 	}
 
 	public void updateOrderButtons(MasterDataChangedAlert mdca) {
-		// TODO Auto-generated method stub
 		orderButtonPanel.initialize(mdca.getProductList(), mdca.getVoucherList());
 	}
 

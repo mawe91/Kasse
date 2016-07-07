@@ -4,14 +4,14 @@ public class Product {
 
 	private int id;
 	private String name;
-	private boolean isDrink;
+	private int prodCat;
 	private int voucherID;
 
-	public Product(int id, String name, boolean isDrink, int voucher) {
+	public Product(int id, String name, int prodCat, int voucher) {
 		super();
 		this.id = id;
 		this.name = name;
-		this.isDrink = isDrink;
+		this.prodCat = prodCat;
 		this.voucherID = voucher;
 	}
 
@@ -35,12 +35,12 @@ public class Product {
 		this.name = name;
 	}
 
-	public boolean isDrink() {
-		return isDrink;
+	public int getProdCat() {
+		return prodCat;
 	}
 
-	public void setDrink(boolean isDrink) {
-		this.isDrink = isDrink;
+	public void setProdCat(int prodCat) {
+		this.prodCat = prodCat;
 	}
 
 	public int getVoucherID() {

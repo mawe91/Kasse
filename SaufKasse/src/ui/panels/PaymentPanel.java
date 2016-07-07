@@ -9,9 +9,10 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 import controller.Controller;
+import interfaces.PaySellingChangerInterface;
 import utilities.Variables;
 
-public class PaymentPanel extends JPanel {
+public class PaymentPanel extends JPanel implements PaySellingChangerInterface{
 
 	/**
 	 * 

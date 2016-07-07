@@ -89,18 +89,7 @@ public class OrderListPanel extends AbstractKassenPanel {
 		return orderTable.getSelectedRow();
 	}
 
-	public void changeToPayMode() {
-		// TODO Auto-generated method stub
-
-	}
-
-	public void changeToSellingMode() {
-		// TODO Auto-generated method stub
-
-	}
-
 	public void changeFont(Font buttonAndComboFont) {
-		// TODO Auto-generated method stub
 		orderTable.setFont(buttonAndComboFont);
 		orderTable.getTableHeader().setFont(Variables.buttonAndComboFont);
 	}

@@ -3,8 +3,6 @@ package controller;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 
 import javax.swing.DefaultListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
@@ -12,25 +10,16 @@ import javax.swing.event.ListSelectionListener;
 
 import model.Model;
 import ui.view.View;
-import ui.view.MasterDataFrame;
 import utilities.Variables;
 
-import beans.Product;
-import beans.Voucher;
-
-public class Controller implements ActionListener, ListSelectionListener, ItemListener {
+public class Controller implements ActionListener, ListSelectionListener {
 
 	private Model model;
 
 	private View view;
-	private MasterDataFrame mdf;
 
 	private int selectedInvoiceLineStart;
 	private int selectedInvoiceLineEnd;
-
-	private Object lastCalledMasterDataDetailPage;
-
-	private String lastSelectedMasterDataType;
 
 	public Controller(Model model) {
 		super();
@@ -40,7 +29,6 @@ public class Controller implements ActionListener, ListSelectionListener, ItemLi
 		selectedInvoiceLineStart = -1;
 		selectedInvoiceLineEnd = -1;
 
-		lastSelectedMasterDataType = "";
 	}
 
 	public void addViewToController(View v) {
@@ -55,8 +43,6 @@ public class Controller implements ActionListener, ListSelectionListener, ItemLi
 
 		System.out.println(arg0);
 		System.out.println(arg0.getActionCommand());
-
-		if (!arg0.getActionCommand().matches("MasterData.*")) {
 
 			// order products
 			for (int i = 0; i < model.getAllProducts().size(); i++) {
@@ -155,101 +141,7 @@ public class Controller implements ActionListener, ListSelectionListener, ItemLi
 					view.changeFont(Variables.buttonAndComboFont);
 				}
 				return;
-			} else if (arg0.getActionCommand() == "Stammdaten") {
-				mdf = new MasterDataFrame(model.getAllVouchers(), this);
-				lastSelectedMasterDataType = "";
-				return;
 			}
-
-		} else {
-			String dataToLoad = arg0.getActionCommand();
-			dataToLoad = dataToLoad.substring(11, dataToLoad.length());
-
-			for (int i = 0; i < model.getAllProducts().size(); i++) {
-				if (model.getAllProducts().get(i).getName().equals(dataToLoad)) {
-					System.out.println("Produkt als Event erkannt in MDF");
-					lastCalledMasterDataDetailPage = model.getAllProducts().get(i);
-					mdf.updateDetailPageArea((Product) lastCalledMasterDataDetailPage);
-					return;
-				}
-			}
-
-			for (int i = 0; i < model.getAllVouchers().size(); i++) {
-				if (model.getAllVouchers().get(i).getDescription().equals(dataToLoad)) {
-					System.out.println("Voucher als Event erkannt in MDF");
-					lastCalledMasterDataDetailPage = model.getAllVouchers().get(i);
-
-					boolean deletable = model.isVoucherDeletable((Voucher) lastCalledMasterDataDetailPage);
-
-					mdf.updateDetailPageArea((Voucher) lastCalledMasterDataDetailPage, deletable);
-					return;
-				}
-			}
-
-			// Stammdaten löschen
-			if (dataToLoad.equals("Löschen")) {
-
-				// Prüfen ob eine Detailseite vorher aufgerufen wurde
-				if (lastCalledMasterDataDetailPage != null) {
-
-					// Wenn Produktdetailseite...
-					if (lastCalledMasterDataDetailPage.getClass().equals(Product.class)) {
-
-						// Product inaktivieren
-						// View aktualisieren
-						// DB/Cache machen
-						model.inactivateProduct((Product) lastCalledMasterDataDetailPage);
-
-						// MDF aktualisieren
-						mdf.updateButtons(model.getAllProducts());
-
-					} else {
-						// checken ob Voucher noch verwendet wird
-						model.inactivateVoucher((Voucher) lastCalledMasterDataDetailPage);
-						mdf.updateButtons(model.getAllVouchers());
-					}
-
-					mdf.updateDetailPageArea();
-					lastCalledMasterDataDetailPage = null;
-				}
-			} else if (dataToLoad.equals("Neu")) {
-				if (lastSelectedMasterDataType.equals("Getränke")) {
-					System.out.println("Getränk anlegen");
-					
-					//TODO: IMPLEMENTIERUNG
-					//mdf.showNewVoucherForm("Getränke");
-					
-				} else if (lastSelectedMasterDataType.equals("Speisen")) {
-					System.out.println("Speisen anlegen");
-					
-					//TODO: IMPLEMENTIERUNG
-					//mdf.showNewProductForm("Speisen");
-					
-					// Getränke oder Initial
-				} else {
-					System.out.println("märkle anlegen");
-					
-					//TODO: IMPLEMENTIERUNG
-					
-					mdf.showNewVoucherForm();
-				}
-			} else if (dataToLoad.equals("Speichern")){
-				
-				//TODO Validierung 
-				
-				//Voucher aus Eingabe erzeugen
-				Voucher nv = mdf.getNewVoucher();
-				
-				//Voucher abspeichern
-				model.saveNewVoucherAndRevalidateCaches(nv);
-				
-				//update mdf vouchers
-				mdf.updateButtons(model.getAllVouchers());
-				
-				//zeige entsprechende detailpage
-				mdf.updateDetailPageArea(nv, true);
-			}
-		}
 
 	}
 
@@ -293,22 +185,4 @@ public class Controller implements ActionListener, ListSelectionListener, ItemLi
 			}
 		}
 	}
-
-	@Override
-	public void itemStateChanged(ItemEvent e) {
-		if (e.getStateChange() == ItemEvent.SELECTED) {
-			if (e.getItem() == "Märkle") {
-				mdf.updateButtons(model.getAllVouchers());
-				lastSelectedMasterDataType = "Märkle";
-				// andernfallse prdukte übermitteln
-			} else if (e.getItem() == "Speisen") {
-				mdf.updateButtons(model.getAllProducts());
-				lastSelectedMasterDataType = "Speisen";
-			} else {
-				mdf.updateButtons(model.getAllProducts());
-				lastSelectedMasterDataType = "Getränke";
-			}
-		}
-	}
-
 }

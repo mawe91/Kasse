@@ -16,7 +16,7 @@ public class Start {
 		}
 
 		DBHandler dbh = new DBHandler();
-		Model model = new Model(dbh, false);
+		Model model = new Model(dbh);
 		
 
 		Controller controller = new Controller(model);
