@@ -8,7 +8,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import beans.Invoice;
@@ -16,8 +15,6 @@ import beans.Product;
 import beans.Voucher;
 
 public class DBHandler {
-
-	private static Logger log = Logger.getLogger(DBHandler.class.getName());
 
 	// JDBC driver name and database URL
 	private static final String JDBC_DRIVER = "org.sqlite.JDBC";
@@ -33,16 +30,17 @@ public class DBHandler {
 	private Connection connection;
 	private Statement stmt;
 
-	private static final String CREATE_TABLE1 = "CREATE TABLE if not exists Invoice (id INTEGER PRIMARY KEY AUTOINCREMENT, timestamp DATETIME NOT NULL);";
-	private static final String CREATE_TABLE2 = "CREATE TABLE if not exists ProductCategory ( id INTEGER PRIMARY KEY AUTOINCREMENT, description TEXT NOT NULL);";
-	private static final String CREATE_TABLE3 = "CREATE TABLE if not exists Voucher (id INTEGER PRIMARY KEY AUTOINCREMENT, price DECIMAL(12, 2) NOT NULL, color TEXT NOT NULL, description TEXT NOT NULL);";
-	private static final String CREATE_TABLE4 = "CREATE TABLE if not exists Product (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, voucher INTEGER NOT NULL REFERENCES Voucher (id), product_category INTEGER NOT NULL REFERENCES ProductCategory (id));";
-	private static final String CREATE_TABLE5 = "CREATE INDEX if not exists idx_product__product_category ON Product (product_category);";
-	private static final String CREATE_TABLE6 = "CREATE INDEX if not exists idx_product__voucher ON Product (voucher);";
-	private static final String CREATE_TABLE7 = "CREATE TABLE if not exists InvoiceLine (id INTEGER PRIMARY KEY AUTOINCREMENT, product INTEGER REFERENCES Product (id), count INTEGER NOT NULL, invoice INTEGER NOT NULL REFERENCES Invoice (id), voucher INTEGER NOT NULL REFERENCES Voucher (id));";
-	private static final String CREATE_TABLE8 = "CREATE INDEX if not exists idx_invoiceline__invoice ON InvoiceLine (invoice);";
-	private static final String CREATE_TABLE9 = "CREATE INDEX if not exists idx_invoiceline__product ON InvoiceLine (product);";
-	private static final String CREATE_TABLE10 = "CREATE INDEX if not exists idx_invoiceline__product ON InvoiceLine (product);";
+
+	private static final String CREATE_TABLE1 = "CREATE TABLE Invoice (id INTEGER PRIMARY KEY AUTOINCREMENT, timestamp DATETIME NOT NULL);";
+	private static final String CREATE_TABLE2 = "CREATE TABLE ProductCategory ( id INTEGER PRIMARY KEY AUTOINCREMENT, description TEXT NOT NULL);";
+	private static final String CREATE_TABLE3 = "CREATE TABLE Voucher (id INTEGER PRIMARY KEY AUTOINCREMENT, price DECIMAL(12, 2) NOT NULL, color TEXT NOT NULL, description TEXT NOT NULL);";
+	private static final String CREATE_TABLE4 = "CREATE TABLE Product (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, voucher INTEGER NOT NULL REFERENCES Voucher (id), product_category INTEGER NOT NULL REFERENCES ProductCategory (id));";
+	private static final String CREATE_TABLE5 = "CREATE INDEX idx_product__product_category ON Product (product_category);";
+	private static final String CREATE_TABLE6 = "CREATE INDEX idx_product__voucher ON Product (voucher);";
+	private static final String CREATE_TABLE7 = "CREATE TABLE InvoiceLine (id INTEGER PRIMARY KEY AUTOINCREMENT, product INTEGER REFERENCES Product (id), count INTEGER NOT NULL, invoice INTEGER NOT NULL REFERENCES Invoice (id), voucher INTEGER NOT NULL REFERENCES Voucher (id));";
+	private static final String CREATE_TABLE8 = "CREATE INDEX idx_invoiceline__invoice ON InvoiceLine (invoice);";
+	private static final String CREATE_TABLE9 = "CREATE INDEX idx_invoiceline__product ON InvoiceLine (product);";
+	private static final String CREATE_TABLE10 = "CREATE INDEX idx_invoiceline__product ON InvoiceLine (product);";
 
 	private static final String DATA_INIT_VOUCHER1 = "INSERT INTO voucher (id, price, color, description) VALUES (1,3.0,'#FF0004','Bier ...');";
 	private static final String DATA_INIT_VOUCHER2 = "INSERT INTO voucher (id, price, color, description) VALUES (2,3.5,'#F0FFFF','Steak');";
@@ -85,11 +83,12 @@ public class DBHandler {
 
 	private void openConnection() {
 		try {
+
 			Class.forName(JDBC_DRIVER);
 			connection = DriverManager.getConnection(DB_URL, USER, PASS);
 			stmt = connection.createStatement();
 
-			// populate db if nessassary
+			// populate db and index if nessassary
 			stmt.execute(CREATE_TABLE1);
 			stmt.execute(CREATE_TABLE2);
 			stmt.execute(CREATE_TABLE3);
@@ -101,54 +100,43 @@ public class DBHandler {
 			stmt.execute(CREATE_TABLE9);
 			stmt.execute(CREATE_TABLE10);
 
-			try {
-				stmt.execute(DATA_INIT_VOUCHER1);
-				stmt.execute(DATA_INIT_VOUCHER2);
-				stmt.execute(DATA_INIT_VOUCHER3);
-				stmt.execute(DATA_INIT_VOUCHER4);
-				stmt.execute(DATA_INIT_VOUCHER5);
-				stmt.execute(DATA_INIT_VOUCHER6);
-				stmt.execute(DATA_INIT_VOUCHER7);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			// Voucher Init
+			stmt.execute(DATA_INIT_VOUCHER1);
+			stmt.execute(DATA_INIT_VOUCHER2);
+			stmt.execute(DATA_INIT_VOUCHER3);
+			stmt.execute(DATA_INIT_VOUCHER4);
+			stmt.execute(DATA_INIT_VOUCHER5);
+			stmt.execute(DATA_INIT_VOUCHER6);
+			stmt.execute(DATA_INIT_VOUCHER7);
 
-			try {
-				stmt.execute(DATA_INIT_ProductCategory1);
-				stmt.execute(DATA_INIT_ProductCategory2);
-				stmt.execute(DATA_INIT_ProductCategory3);
-				stmt.execute(DATA_INIT_ProductCategory4);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			// Product Category Init
+			stmt.execute(DATA_INIT_ProductCategory1);
+			stmt.execute(DATA_INIT_ProductCategory2);
+			stmt.execute(DATA_INIT_ProductCategory3);
+			stmt.execute(DATA_INIT_ProductCategory4);
 
-			try {
-				stmt.execute(DATA_INIT_Product1);
-				stmt.execute(DATA_INIT_Product2);
-				stmt.execute(DATA_INIT_Product3);
-				stmt.execute(DATA_INIT_Product4);
-				stmt.execute(DATA_INIT_Product5);
-				stmt.execute(DATA_INIT_Product6);
-				stmt.execute(DATA_INIT_Product7);
-				stmt.execute(DATA_INIT_Product8);
-				stmt.execute(DATA_INIT_Product9);
-				stmt.execute(DATA_INIT_Product10);
-				stmt.execute(DATA_INIT_Product11);
-				stmt.execute(DATA_INIT_Product12);
-				stmt.execute(DATA_INIT_Product13);
-				stmt.execute(DATA_INIT_Product14);
-				stmt.execute(DATA_INIT_Product15);
-				stmt.execute(DATA_INIT_Product16);
-				stmt.execute(DATA_INIT_Product17);
-
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-
-			System.out.println();
+			// Product Init
+			stmt.execute(DATA_INIT_Product1);
+			stmt.execute(DATA_INIT_Product2);
+			stmt.execute(DATA_INIT_Product3);
+			stmt.execute(DATA_INIT_Product4);
+			stmt.execute(DATA_INIT_Product5);
+			stmt.execute(DATA_INIT_Product6);
+			stmt.execute(DATA_INIT_Product7);
+			stmt.execute(DATA_INIT_Product8);
+			stmt.execute(DATA_INIT_Product9);
+			stmt.execute(DATA_INIT_Product10);
+			stmt.execute(DATA_INIT_Product11);
+			stmt.execute(DATA_INIT_Product12);
+			stmt.execute(DATA_INIT_Product13);
+			stmt.execute(DATA_INIT_Product14);
+			stmt.execute(DATA_INIT_Product15);
+			stmt.execute(DATA_INIT_Product16);
+			stmt.execute(DATA_INIT_Product17);
 
 		} catch (Exception e) {
-			log.log(Level.SEVERE, e.toString());
+			//
+			e.printStackTrace();
 		}
 
 	}
@@ -202,23 +190,21 @@ public class DBHandler {
 	public void storeInvoice(Invoice invoice) {
 
 		try {
+			//generate invoice
 			stmt.executeUpdate("INSERT INTO invoice (timestamp) VALUES (CURRENT_TIMESTAMP)");
 
-			ResultSet rs = stmt.executeQuery("select last_insert_id() as last_id from invoice");
+			//get Invoice ID
+			ResultSet rs = stmt.executeQuery("SELECT id from invoice order by ROWID DESC limit 1");
 			rs.next();
-			int lastid = rs.getInt("last_id");
-			System.out.println(""+lastid);
+			int invoiceId = rs.getInt("id");
+			invoice.setId(invoiceId);
+			rs.close();
 			
-			// ResultSet rs = stmt.getGeneratedKeys();
-			// int invId = 0;
-			// while (rs.next()) {
-			// invId = rs.getInt(1);
-			// }
-			// invoice.setId(invId);
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
 
+		//StoreInvoiceLines
 		for (int i = 0; i < invoice.getInvoiceLines().size(); i++) {
 			if (invoice.getInvoiceLines().get(i).getCount() != 0) {
 
@@ -243,6 +229,8 @@ public class DBHandler {
 		}
 
 	}
+	
+	
 
 	/*
 	 * // Clean-up environment rs.close(); stmt.close(); disconnect();
