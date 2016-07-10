@@ -29,7 +29,6 @@ public class DBHandler {
 	private Connection connection;
 	private Statement stmt;
 
-
 	private static final String CREATE_TABLE1 = "CREATE TABLE Invoice (id INTEGER PRIMARY KEY AUTOINCREMENT, timestamp DATETIME NOT NULL);";
 	private static final String CREATE_TABLE2 = "CREATE TABLE ProductCategory ( id INTEGER PRIMARY KEY AUTOINCREMENT, description TEXT NOT NULL);";
 	private static final String CREATE_TABLE3 = "CREATE TABLE Voucher (id INTEGER PRIMARY KEY AUTOINCREMENT, price DECIMAL(12, 2) NOT NULL, color TEXT NOT NULL, description TEXT NOT NULL);";
@@ -71,21 +70,21 @@ public class DBHandler {
 	private static final String DATA_INIT_Product16 = "INSERT INTO product (id, name, voucher, product_category) VALUES (16,'Pommes',4,4);";
 	private static final String DATA_INIT_Product17 = "INSERT INTO product (id, name, voucher, product_category) VALUES (17,'Mittagessen',7,4);";
 
-	
 	private static final String GET_PRODUCTS = "SELECT * FROM product;";
 	private static final String GET_VOUCHERS = "SELECT * FROM voucher;";
-	
-	//private static final String GET_TIMESTAMP_LOCAL = "select timestamp(timestamp, 'localtime') FROM invoice limit 1;";
-	//private static final String GET_TIMESTAMP_LOCAL = "select timestamp(timestamp, 'localtime');";
 
-	
+	// private static final String GET_TIMESTAMP_LOCAL = "select
+	// timestamp(timestamp, 'localtime') FROM invoice limit 1;";
+	// private static final String GET_TIMESTAMP_LOCAL = "select
+	// timestamp(timestamp, 'localtime');";
+
 	public DBHandler() {
 		dir.mkdir();
 		openConnection();
 	}
 
 	private void openConnection() {
-		
+
 		try {
 
 			Class.forName(JDBC_DRIVER);
@@ -163,7 +162,7 @@ public class DBHandler {
 		return productList;
 	}
 
-	public ArrayList<Voucher> getAllVouchers(){
+	public ArrayList<Voucher> getAllVouchers() {
 		ArrayList<Voucher> voucherList = new ArrayList<Voucher>();
 		try {
 			ResultSet rs = stmt.executeQuery(GET_VOUCHERS);
@@ -192,21 +191,21 @@ public class DBHandler {
 	public void storeInvoice(Invoice invoice) {
 
 		try {
-			//generate invoice
+			// generate invoice
 			stmt.executeUpdate("INSERT INTO invoice (timestamp) VALUES (CURRENT_TIMESTAMP)");
 
-			//get Invoice ID
+			// get Invoice ID
 			ResultSet rs = stmt.executeQuery("SELECT id from invoice order by ROWID DESC limit 1");
 			rs.next();
 			int invoiceId = rs.getInt("id");
 			invoice.setId(invoiceId);
 			rs.close();
-			
+
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
 
-		//StoreInvoiceLines
+		// StoreInvoiceLines
 		for (int i = 0; i < invoice.getInvoiceLines().size(); i++) {
 			if (invoice.getInvoiceLines().get(i).getCount() != 0) {
 
@@ -230,5 +229,22 @@ public class DBHandler {
 			}
 		}
 
+	}
+
+	public int getProductPurchase(int pid) {
+
+		int count = -1;
+
+		try {
+			ResultSet rs = stmt.executeQuery("SELECT sum(count) FROM InvoiceLine WHERE product=" + pid + ";");
+			while (rs.next()) {
+				count = rs.getInt(1);
+			}
+			rs.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return count;
 	}
 }

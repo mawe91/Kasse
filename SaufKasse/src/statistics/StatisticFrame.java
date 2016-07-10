@@ -40,7 +40,7 @@ public class StatisticFrame extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
 		
-		JFreeChart chart = ChartFactory.createBarChart("MyFirstChart", "", "", model.getSoldDrinkDataset());
+		JFreeChart chart = ChartFactory.createBarChart("Verkaufte Produkte", "", "", model.getSoldProductsDataset());
 		CategoryPlot catplot = chart.getCategoryPlot();
 		catplot.setRangeGridlinePaint(Color.BLACK);
 		

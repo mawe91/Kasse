@@ -92,6 +92,16 @@ public class Model extends Observable {
 		return null;
 	}
 
+	private ArrayList<Product> getProductsByCategory(int catid) {
+		ArrayList<Product> al = new ArrayList<Product>();
+		for (int i = 0; i < getAllProducts().size(); i++) {
+			if (getAllProducts().get(i).getProdCat() == catid) {
+				al.add(getAllProducts().get(i));
+			}
+		}
+		return al;
+	}
+
 	// Booking
 	public void orderProduct(int productID) {
 
@@ -292,13 +302,14 @@ public class Model extends Observable {
 		return true;
 	}
 
-	public DefaultCategoryDataset getSoldDrinkDataset() {
+	public DefaultCategoryDataset getSoldProductsDataset() {
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-		
-		dataset.setValue(22, "", "Statistic_1");
-		dataset.setValue(20, "", "Statistic_2");
-		dataset.setValue(30, "", "Statistic_3");
+
+		for (int i = 0; i < getAllProducts().size(); i++) {
+			dataset.setValue(dbh.getProductPurchase(i + 1), "", getProductById(i + 1).getName());
+		}
 
 		return dataset;
 	}
+
 }
