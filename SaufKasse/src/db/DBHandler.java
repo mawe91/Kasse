@@ -132,7 +132,6 @@ public class DBHandler {
 			stmt.execute(DATA_INIT_Product17);
 
 		} catch (Exception e) {
-			//
 			e.printStackTrace();
 		}
 
