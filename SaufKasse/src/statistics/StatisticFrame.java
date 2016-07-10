@@ -37,7 +37,6 @@ public class StatisticFrame extends JFrame {
 		c.setLayout(new FlowLayout());
 
 		setSize(new Dimension(1024, 768));
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
 		
 		JFreeChart chart = ChartFactory.createBarChart("Verkaufte Produkte", "", "", model.getSoldProductsDataset());
