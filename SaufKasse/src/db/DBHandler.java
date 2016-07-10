@@ -71,15 +71,21 @@ public class DBHandler {
 	private static final String DATA_INIT_Product16 = "INSERT INTO product (id, name, voucher, product_category) VALUES (16,'Pommes',4,4);";
 	private static final String DATA_INIT_Product17 = "INSERT INTO product (id, name, voucher, product_category) VALUES (17,'Mittagessen',7,4);";
 
+	
 	private static final String GET_PRODUCTS = "SELECT * FROM product;";
 	private static final String GET_VOUCHERS = "SELECT * FROM voucher;";
+	
+	//private static final String GET_TIMESTAMP_LOCAL = "select timestamp(timestamp, 'localtime') FROM invoice limit 1;";
+	//private static final String GET_TIMESTAMP_LOCAL = "select timestamp(timestamp, 'localtime');";
 
+	
 	public DBHandler() {
 		dir.mkdir();
 		openConnection();
 	}
 
 	private void openConnection() {
+		
 		try {
 
 			Class.forName(JDBC_DRIVER);
@@ -157,7 +163,7 @@ public class DBHandler {
 		return productList;
 	}
 
-	public ArrayList<Voucher> getAllVouchers() {
+	public ArrayList<Voucher> getAllVouchers(){
 		ArrayList<Voucher> voucherList = new ArrayList<Voucher>();
 		try {
 			ResultSet rs = stmt.executeQuery(GET_VOUCHERS);
