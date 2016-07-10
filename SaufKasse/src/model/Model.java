@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Observable;
 
+import org.jfree.data.category.DefaultCategoryDataset;
+
 import alertobjects.CalcFieldAlert;
 import alertobjects.InvoiceAlert;
 import alertobjects.OpenSumAlert;
@@ -288,5 +290,15 @@ public class Model extends Observable {
 			}
 		}
 		return true;
+	}
+
+	public DefaultCategoryDataset getSoldDrinkDataset() {
+		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+		
+		dataset.setValue(22, "", "Statistic_1");
+		dataset.setValue(20, "", "Statistic_2");
+		dataset.setValue(30, "", "Statistic_3");
+
+		return dataset;
 	}
 }

@@ -25,7 +25,6 @@ public class StatisticFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private Panel panel;
 	private Container c;
-	private DefaultCategoryDataset dataset;
 	private Model model;
 	
 	public StatisticFrame (Model model){
@@ -41,13 +40,7 @@ public class StatisticFrame extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
 		
-		
-		dataset = new DefaultCategoryDataset();
-		dataset.setValue(10, "", "Statistic_1");
-		dataset.setValue(20, "", "Statistic_2");
-		dataset.setValue(30, "", "Statistic_3");
-		
-		JFreeChart chart = ChartFactory.createBarChart("MyFirstChart", "", "", dataset);
+		JFreeChart chart = ChartFactory.createBarChart("MyFirstChart", "", "", model.getSoldDrinkDataset());
 		CategoryPlot catplot = chart.getCategoryPlot();
 		catplot.setRangeGridlinePaint(Color.BLACK);
 		
@@ -58,8 +51,6 @@ public class StatisticFrame extends JFrame {
 		c.add(panel);
 
 	}
-	
-	
 
 	
 	
