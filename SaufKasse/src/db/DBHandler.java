@@ -4,10 +4,16 @@ import java.awt.Color;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
+
+import org.jfree.data.time.Minute;
+import org.jfree.data.time.TimeSeries;
 
 import beans.Invoice;
 import beans.Product;
@@ -72,11 +78,6 @@ public class DBHandler {
 
 	private static final String GET_PRODUCTS = "SELECT * FROM product;";
 	private static final String GET_VOUCHERS = "SELECT * FROM voucher;";
-
-	// private static final String GET_TIMESTAMP_LOCAL = "select
-	// timestamp(timestamp, 'localtime') FROM invoice limit 1;";
-	// private static final String GET_TIMESTAMP_LOCAL = "select
-	// timestamp(timestamp, 'localtime');";
 
 	public DBHandler() {
 		dir.mkdir();
@@ -192,7 +193,14 @@ public class DBHandler {
 
 		try {
 			// generate invoice
-			stmt.executeUpdate("INSERT INTO invoice (timestamp) VALUES (CURRENT_TIMESTAMP)");
+			String INSERT_RECORD = "insert into invoice(timestamp) values(?)";
+
+			PreparedStatement pstmt = connection.prepareStatement(INSERT_RECORD);
+			java.sql.Timestamp sqlDate = new java.sql.Timestamp(new java.util.Date().getTime());
+			pstmt.setTimestamp(1, sqlDate);
+
+			pstmt.executeUpdate();
+			pstmt.close();
 
 			// get Invoice ID
 			ResultSet rs = stmt.executeQuery("SELECT id from invoice order by ROWID DESC limit 1");
@@ -246,5 +254,35 @@ public class DBHandler {
 		}
 
 		return count;
+	}
+
+	public TimeSeries getProductTimeSeries(int pid) {
+		TimeSeries s1 = new TimeSeries("Produkt-ID: " + pid);
+
+		try {
+			ResultSet rs = stmt.executeQuery(
+					"SELECT invoice.timestamp, invoiceline.count FROM Invoice INNER JOIN Invoiceline ON Invoice.id=Invoiceline.invoice WHERE Invoiceline.product="
+							+ pid + ";");
+			int soldsum = 0;
+			while (rs.next()) {
+				long ts = new Timestamp(rs.getLong("timestamp")).getTime();
+				Calendar cal = Calendar.getInstance();
+				cal.setTimeInMillis(ts);
+				// Wenn Time Objekt schon besteht
+				Minute m = new Minute(cal.get(Calendar.MINUTE), cal.get(Calendar.HOUR_OF_DAY),
+						cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.YEAR));
+				soldsum = rs.getInt("count");
+				if (s1.getDataItem(m) != null) {
+					soldsum = s1.getDataItem(m).getValue().intValue() + soldsum;
+					s1.delete(m);
+				}
+				s1.add(m, soldsum);
+			}
+			rs.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return s1;
 	}
 }

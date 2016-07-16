@@ -6,6 +6,10 @@ import java.util.Locale;
 import java.util.Observable;
 
 import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.time.Minute;
+import org.jfree.data.time.TimeSeries;
+import org.jfree.data.time.TimeSeriesCollection;
+import org.jfree.data.xy.XYDataset;
 
 import alertobjects.CalcFieldAlert;
 import alertobjects.InvoiceAlert;
@@ -310,6 +314,19 @@ public class Model extends Observable {
 		}
 
 		return dataset;
+	}
+
+	public XYDataset getSalesTimeSeries() {
+		final TimeSeriesCollection dataset = new TimeSeriesCollection();
+
+		TimeSeries ts;
+		for (int i = 0; i < getAllProducts().size(); i++) {
+			ts = dbh.getProductTimeSeries(i);
+			dataset.addSeries(ts);
+		}
+
+		return dataset;
+
 	}
 
 }
