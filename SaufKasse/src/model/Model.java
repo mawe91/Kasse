@@ -5,6 +5,12 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Observable;
 
+import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.time.Minute;
+import org.jfree.data.time.TimeSeries;
+import org.jfree.data.time.TimeSeriesCollection;
+import org.jfree.data.xy.XYDataset;
+
 import alertobjects.CalcFieldAlert;
 import alertobjects.InvoiceAlert;
 import alertobjects.OpenSumAlert;
@@ -88,6 +94,16 @@ public class Model extends Observable {
 			}
 		}
 		return null;
+	}
+
+	private ArrayList<Product> getProductsByCategory(int catid) {
+		ArrayList<Product> al = new ArrayList<Product>();
+		for (int i = 0; i < getAllProducts().size(); i++) {
+			if (getAllProducts().get(i).getProdCat() == catid) {
+				al.add(getAllProducts().get(i));
+			}
+		}
+		return al;
 	}
 
 	// Booking
@@ -289,4 +305,28 @@ public class Model extends Observable {
 		}
 		return true;
 	}
+
+	public DefaultCategoryDataset getSoldProductsDataset() {
+		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+
+		for (int i = 0; i < getAllProducts().size(); i++) {
+			dataset.setValue(dbh.getProductPurchase(i + 1), "", getProductById(i + 1).getName());
+		}
+
+		return dataset;
+	}
+
+	public XYDataset getSalesTimeSeries() {
+		final TimeSeriesCollection dataset = new TimeSeriesCollection();
+
+		TimeSeries ts;
+		for (int i = 0; i < getAllProducts().size(); i++) {
+			ts = dbh.getProductTimeSeries(i);
+			dataset.addSeries(ts);
+		}
+
+		return dataset;
+
+	}
+
 }

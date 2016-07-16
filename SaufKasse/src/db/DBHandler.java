@@ -4,10 +4,16 @@ import java.awt.Color;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
+
+import org.jfree.data.time.Minute;
+import org.jfree.data.time.TimeSeries;
 
 import beans.Invoice;
 import beans.Product;
@@ -28,7 +34,6 @@ public class DBHandler {
 	// Variables
 	private Connection connection;
 	private Statement stmt;
-
 
 	private static final String CREATE_TABLE1 = "CREATE TABLE Invoice (id INTEGER PRIMARY KEY AUTOINCREMENT, timestamp DATETIME NOT NULL);";
 	private static final String CREATE_TABLE2 = "CREATE TABLE ProductCategory ( id INTEGER PRIMARY KEY AUTOINCREMENT, description TEXT NOT NULL);";
@@ -80,6 +85,7 @@ public class DBHandler {
 	}
 
 	private void openConnection() {
+
 		try {
 
 			Class.forName(JDBC_DRIVER);
@@ -186,21 +192,28 @@ public class DBHandler {
 	public void storeInvoice(Invoice invoice) {
 
 		try {
-			//generate invoice
-			stmt.executeUpdate("INSERT INTO invoice (timestamp) VALUES (CURRENT_TIMESTAMP)");
+			// generate invoice
+			String INSERT_RECORD = "insert into invoice(timestamp) values(?)";
 
-			//get Invoice ID
+			PreparedStatement pstmt = connection.prepareStatement(INSERT_RECORD);
+			java.sql.Timestamp sqlDate = new java.sql.Timestamp(new java.util.Date().getTime());
+			pstmt.setTimestamp(1, sqlDate);
+
+			pstmt.executeUpdate();
+			pstmt.close();
+
+			// get Invoice ID
 			ResultSet rs = stmt.executeQuery("SELECT id from invoice order by ROWID DESC limit 1");
 			rs.next();
 			int invoiceId = rs.getInt("id");
 			invoice.setId(invoiceId);
 			rs.close();
-			
+
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
 
-		//StoreInvoiceLines
+		// StoreInvoiceLines
 		for (int i = 0; i < invoice.getInvoiceLines().size(); i++) {
 			if (invoice.getInvoiceLines().get(i).getCount() != 0) {
 
@@ -224,5 +237,52 @@ public class DBHandler {
 			}
 		}
 
+	}
+
+	public int getProductPurchase(int pid) {
+
+		int count = -1;
+
+		try {
+			ResultSet rs = stmt.executeQuery("SELECT sum(count) FROM InvoiceLine WHERE product=" + pid + ";");
+			while (rs.next()) {
+				count = rs.getInt(1);
+			}
+			rs.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return count;
+	}
+
+	public TimeSeries getProductTimeSeries(int pid) {
+		TimeSeries s1 = new TimeSeries("Produkt-ID: " + pid);
+
+		try {
+			ResultSet rs = stmt.executeQuery(
+					"SELECT invoice.timestamp, invoiceline.count FROM Invoice INNER JOIN Invoiceline ON Invoice.id=Invoiceline.invoice WHERE Invoiceline.product="
+							+ pid + ";");
+			int soldsum = 0;
+			while (rs.next()) {
+				long ts = new Timestamp(rs.getLong("timestamp")).getTime();
+				Calendar cal = Calendar.getInstance();
+				cal.setTimeInMillis(ts);
+				// Wenn Time Objekt schon besteht
+				Minute m = new Minute(cal.get(Calendar.MINUTE), cal.get(Calendar.HOUR_OF_DAY),
+						cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.YEAR));
+				soldsum = rs.getInt("count");
+				if (s1.getDataItem(m) != null) {
+					soldsum = s1.getDataItem(m).getValue().intValue() + soldsum;
+					s1.delete(m);
+				}
+				s1.add(m, soldsum);
+			}
+			rs.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return s1;
 	}
 }
