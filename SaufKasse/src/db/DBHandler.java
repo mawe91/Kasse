@@ -52,11 +52,14 @@ public class DBHandler {
 	private static final String DATA_INIT_VOUCHER5 = "INSERT INTO voucher (id, price, color, description) VALUES (5,1.7,'#4876FF','Cola, Bluna, Sprudel');";
 	private static final String DATA_INIT_VOUCHER6 = "INSERT INTO voucher (id, price, color, description) VALUES (6,12.0,'#FFC1C1','Wein');";
 	private static final String DATA_INIT_VOUCHER7 = "INSERT INTO voucher (id, price, color, description) VALUES (7,9.0,'#FFC1C1','<html>Wein<br>(Mittagessen)</html>');";
+	private static final String DATA_INIT_VOUCHER8 = "INSERT INTO voucher (id, price, color, description) VALUES (8,2.0,'#FFFFFF','Pfand');";
+	private static final String DATA_INIT_VOUCHER9 = "INSERT INTO voucher (id, price, color, description) VALUES (9,-2.0,'#FFFFFF','Pfand Rückgabe');";
 
 	private static final String DATA_INIT_ProductCategory1 = "INSERT INTO productcategory (id, description) VALUES (1,'Alkohol');";
 	private static final String DATA_INIT_ProductCategory2 = "INSERT INTO productcategory (id, description) VALUES (2,'Alkoholfrei');";
 	private static final String DATA_INIT_ProductCategory3 = "INSERT INTO productcategory (id, description) VALUES (3,'Flaschen');";
 	private static final String DATA_INIT_ProductCategory4 = "INSERT INTO productcategory (id, description) VALUES (4,'Essen');";
+	private static final String DATA_INIT_ProductCategory5 = "INSERT INTO productcategory (id, description) VALUES (5,'Pfand');";
 
 	private static final String DATA_INIT_Product1 = "INSERT INTO product (id, name, voucher, product_category) VALUES (1,'Bier',1,1);";
 	private static final String DATA_INIT_Product2 = "INSERT INTO product (id, name, voucher, product_category) VALUES (2,'Weizen',3,1);";
@@ -75,6 +78,8 @@ public class DBHandler {
 	private static final String DATA_INIT_Product15 = "INSERT INTO product (id, name, voucher, product_category) VALUES (15,'Schnitzel',2,4);";
 	private static final String DATA_INIT_Product16 = "INSERT INTO product (id, name, voucher, product_category) VALUES (16,'Pommes',4,4);";
 	private static final String DATA_INIT_Product17 = "INSERT INTO product (id, name, voucher, product_category) VALUES (17,'Mittagessen',7,4);";
+	private static final String DATA_INIT_Product18 = "INSERT INTO product (id, name, voucher, product_category) VALUES (18,'Pfand',7,5);";
+	private static final String DATA_INIT_Product19 = "INSERT INTO product (id, name, voucher, product_category) VALUES (19,'Pfand Rückgabe',7,5);";
 
 	private static final String GET_PRODUCTS = "SELECT * FROM product;";
 	private static final String GET_VOUCHERS = "SELECT * FROM voucher;";
@@ -111,12 +116,15 @@ public class DBHandler {
 			stmt.execute(DATA_INIT_VOUCHER5);
 			stmt.execute(DATA_INIT_VOUCHER6);
 			stmt.execute(DATA_INIT_VOUCHER7);
+			stmt.execute(DATA_INIT_VOUCHER8);
+			stmt.execute(DATA_INIT_VOUCHER9);
 
 			// Product Category Init
 			stmt.execute(DATA_INIT_ProductCategory1);
 			stmt.execute(DATA_INIT_ProductCategory2);
 			stmt.execute(DATA_INIT_ProductCategory3);
 			stmt.execute(DATA_INIT_ProductCategory4);
+			stmt.execute(DATA_INIT_ProductCategory5);
 
 			// Product Init
 			stmt.execute(DATA_INIT_Product1);
@@ -136,6 +144,8 @@ public class DBHandler {
 			stmt.execute(DATA_INIT_Product15);
 			stmt.execute(DATA_INIT_Product16);
 			stmt.execute(DATA_INIT_Product17);
+			stmt.execute(DATA_INIT_Product18);
+			stmt.execute(DATA_INIT_Product19);
 
 		} catch (Exception e) {
 			e.printStackTrace();
