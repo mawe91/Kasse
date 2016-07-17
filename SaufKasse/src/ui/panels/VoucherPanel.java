@@ -17,12 +17,14 @@ public class VoucherPanel extends AbstractKassenPanel {
 	 */
 	private static final long serialVersionUID = 1L;
 	ArrayList<Voucher> voucherAl;
-	ArrayList<JLabel> voucherLabels;
-
+	ArrayList<JLabel> voucherCountLabels;
+	ArrayList<JLabel> voucherNameLabels;
+	
 	public VoucherPanel() {
 		super();
-		voucherLabels = new ArrayList<JLabel>();
-
+		voucherCountLabels = new ArrayList<JLabel>();
+		voucherNameLabels = new ArrayList<JLabel>();
+		
 		// Implementation of Voucher
 		voucherAl = new ArrayList<Voucher>();
 	}
@@ -31,13 +33,12 @@ public class VoucherPanel extends AbstractKassenPanel {
 	//Wil ein Märckchen 2 Voucher hat
 	public void updateVoucherCount(Map<Integer, Integer> voucherMap) {
 		
-		
-		for (int i = 0; i < voucherLabels.size(); i++) {
+		for (int i = 0; i < voucherCountLabels.size(); i++) {
 			Integer vIDCount = voucherMap.get(i + 1);
 			if (vIDCount == null) {
 				vIDCount = 0;
 			}
-			if (i == voucherLabels.size()-1){
+			if (i == 5){
 				if (voucherMap.get(i+2) == null) {
 					//nothing to add
 				} else {
@@ -45,7 +46,7 @@ public class VoucherPanel extends AbstractKassenPanel {
 				}
 				
 			}
-			voucherLabels.get(i).setText("" + vIDCount);
+			voucherCountLabels.get(i).setText("" + vIDCount);
 		}
 
 	}
@@ -53,15 +54,25 @@ public class VoucherPanel extends AbstractKassenPanel {
 	public void initialize(ArrayList<Voucher> alv) {
 
 		//exclude Mittag als extra märkchen
-		for (int i = 0; i < alv.size()-1; i++) {
+		for (int i = 0; i < alv.size()-3; i++) {
 			setConstraintSettings(0, i, 0.5, 0.5, 1, 1);
-			JLabel jl = new JLabel("0");
+			JLabel jl = new JLabel(alv.get(i).getDescription());
 			jl.setHorizontalAlignment(JLabel.CENTER);
 			jl.setFont(Variables.buttonAndComboFont);
 			jl.setOpaque(true);
 			jl.setBackground(alv.get(i).getColor());
 			jl.setForeground(Color.BLACK);
-			voucherLabels.add(jl);
+			voucherNameLabels.add(jl);
+			add(jl,gbc);
+			
+			setConstraintSettings(1, i, 0.5, 0.5, 1, 1);
+			jl = new JLabel("0");
+			jl.setHorizontalAlignment(JLabel.CENTER);
+			jl.setFont(Variables.buttonAndComboFont);
+			jl.setOpaque(true);
+			jl.setBackground(alv.get(i).getColor());
+			jl.setForeground(Color.BLACK);
+			voucherCountLabels.add(jl);
 			add(jl, gbc);
 		}
 
@@ -71,8 +82,9 @@ public class VoucherPanel extends AbstractKassenPanel {
 	}
 
 	public void changeFont(Font buttonAndComboFont) {
-		for (int i = 0; i < voucherLabels.size(); i++) {
-			voucherLabels.get(i).setFont(buttonAndComboFont);
+		for (int i = 0; i < voucherCountLabels.size(); i++) {
+			voucherCountLabels.get(i).setFont(buttonAndComboFont);
+			voucherNameLabels.get(i).setFont(buttonAndComboFont);
 		}
 	}
 
