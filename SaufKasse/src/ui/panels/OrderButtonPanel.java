@@ -60,7 +60,7 @@ public class OrderButtonPanel extends AbstractKassenPanel implements PaySellingC
 			add(buttonToAdd, gbc);
 		}
 
-		for (int i = 0; i < alv.size(); i++) {
+		for (int i = 0; i < alv.size()-2; i++) {
 			Voucher voucher = alv.get(i);
 			buttonToAdd = generateNewJButton(voucher.getDescription(), listener, font);
 			setConstraintSettings(3, i, 0.5, 0.5, 1, 1);
