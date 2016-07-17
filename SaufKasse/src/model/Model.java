@@ -6,7 +6,6 @@ import java.util.Locale;
 import java.util.Observable;
 
 import org.jfree.data.category.DefaultCategoryDataset;
-import org.jfree.data.time.Minute;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.data.xy.XYDataset;
