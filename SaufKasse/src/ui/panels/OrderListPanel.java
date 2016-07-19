@@ -1,11 +1,14 @@
 package ui.panels;
 
 
+import java.awt.Color;
 import java.awt.Font;
 
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.UIManager;
+import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
@@ -25,6 +28,8 @@ public class OrderListPanel extends AbstractKassenPanel {
 	JTable orderTable;
 	
 	public OrderListPanel(Controller controller) {
+		
+		setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Bon", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(128, 128, 128)));
 
 		orderTableModel = new DefaultTableModel();
 		orderTableModel.addColumn("Produkte");
@@ -45,7 +50,7 @@ public class OrderListPanel extends AbstractKassenPanel {
 
 		// Font Settings
 		orderTable.setFont(Variables.buttonAndComboFont);
-		orderTable.getTableHeader().setFont(Variables.buttonAndComboFont);
+		orderTable.getTableHeader().setFont(Variables.menuFont);
 
 		// Scrollcontainer
 		jsp = new JScrollPane(orderTable);

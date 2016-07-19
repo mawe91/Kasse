@@ -1,9 +1,7 @@
 package ui.panels;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Font;
-import java.awt.GridBagConstraints;
 import java.awt.GridLayout;
 import java.text.DecimalFormat;
 
@@ -13,11 +11,9 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
-import javax.swing.text.JTextComponent;
 
 import alertobjects.InvoiceAlert;
 import beans.Invoice;
-import interfaces.PaySellingChangerInterface;
 import utilities.Variables;
 
 public class InvoiceSumPanel extends AbstractKassenPanel{

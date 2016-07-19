@@ -1,10 +1,14 @@
 package ui.panels;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
+import javax.swing.UIManager;
+import javax.swing.border.TitledBorder;
+
 import beans.Product;
 import beans.Voucher;
 import controller.Controller;
@@ -27,6 +31,8 @@ public class OrderButtonPanel extends AbstractKassenPanel implements PaySellingC
 
 	public void initialize(ArrayList<Product> alp, ArrayList<Voucher> alv) {
 
+		setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Produkte", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(128, 128, 128)));
+		
 		uiElements = new ArrayList<JButton>();
 		removeAll();
 		revalidate();

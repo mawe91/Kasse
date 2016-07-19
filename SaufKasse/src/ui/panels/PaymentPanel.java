@@ -1,5 +1,6 @@
 package ui.panels;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.util.ArrayList;
@@ -7,6 +8,8 @@ import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
+import javax.swing.border.TitledBorder;
 
 import controller.Controller;
 import interfaces.PaySellingChangerInterface;
@@ -30,6 +33,8 @@ public class PaymentPanel extends JPanel implements PaySellingChangerInterface{
 	JButton jb;
 
 	public PaymentPanel(Controller controller) {
+		
+		setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Bezahlen", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(128, 128, 128)));
 
 		setLayout(new GridLayout(0, 2));
 

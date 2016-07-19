@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.UIManager;
+import javax.swing.border.TitledBorder;
 
 import beans.Voucher;
 import utilities.Variables;
@@ -52,6 +55,8 @@ public class VoucherPanel extends AbstractKassenPanel {
 	}
 
 	public void initialize(ArrayList<Voucher> alv) {
+		
+		setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Märkchen", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(128, 128, 128)));
 
 		//exclude Mittag als extra märkchen
 		for (int i = 0; i < alv.size()-3; i++) {
