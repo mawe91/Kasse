@@ -140,14 +140,12 @@ public class View extends JFrame implements Observer {
 
 	public void changeToPayMode() {
 		buttonButtomPanel.changeToPayMode();
-		infoTopArea.changeToPayMode();
 		repaint();
 		revalidate();
 	}
 
 	public void changeToSellingMode() {
 		buttonButtomPanel.changeToSellingMode();
-		infoTopArea.changeToSellingMode();
 		repaint();
 		revalidate();
 	}

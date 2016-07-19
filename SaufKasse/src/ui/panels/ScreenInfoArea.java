@@ -46,14 +46,6 @@ public class ScreenInfoArea extends JPanel {
 		voucherPanel.initialize(alv);
 	}
 
-	public void changeToPayMode() {
-		invoiceSumPanel.changeToPayMode();
-	}
-
-	public void changeToSellingMode() {
-		invoiceSumPanel.changeToSellingMode();		
-	}
-
 	public int getSelectedTableRow() {
 		return orderListPanel.getSelectedTableRow();
 	}
