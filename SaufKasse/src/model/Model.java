@@ -6,7 +6,6 @@ import java.util.Locale;
 import java.util.Observable;
 
 import org.jfree.data.category.DefaultCategoryDataset;
-import org.jfree.data.time.Minute;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.data.xy.XYDataset;
@@ -18,6 +17,7 @@ import beans.Invoice;
 import beans.Product;
 import beans.Voucher;
 import db.DBHandler;
+import utilities.Variables;
 
 public class Model extends Observable {
 
@@ -118,12 +118,21 @@ public class Model extends Observable {
 			// einmal buchen
 			currentInvoice.orderProduct(productID, vid, getVoucherById(vid).getPrice(),
 					getProductById(productID).getName());
+			//Pfand buchen wenn notwendig
+			if (getProductById(productID).isDepositIncluded()){
+				currentInvoice.orderProduct(Variables.ProductDepositID, Variables.voucherDepositID, getVoucherById(vid).getPrice(), getProductById(Variables.ProductDepositID).getName());
+			}
 
 		} else {
 
 			// Mehrfachbuchen
-			currentInvoice.orderProduct(productID, vid, Integer.parseInt(calcText.substring(0, calcText.length() - 2)),
-					getVoucherById(vid).getPrice(), getProductById(productID).getName());
+			int orderquantity = Integer.parseInt(calcText.substring(0, calcText.length() - 2));
+			currentInvoice.orderProduct(productID, vid, orderquantity, getVoucherById(vid).getPrice(),
+					getProductById(productID).getName());
+			//Pfand buchen wenn notwendig
+			if (getProductById(productID).isDepositIncluded()){
+				currentInvoice.orderProduct(Variables.ProductDepositID, Variables.voucherDepositID, orderquantity,getVoucherById(vid).getPrice(), getProductById(Variables.ProductDepositID).getName());
+			}
 		}
 
 		notifyInvoiceChange();
@@ -141,8 +150,9 @@ public class Model extends Observable {
 
 		} else {
 			// Mehrfachbuchen
-			currentInvoice.orderVoucher(voucherID, Integer.parseInt(calcText.substring(0, calcText.length() - 2)),
-					getVoucherById(voucherID).getPrice(), getVoucherById(voucherID).getDescription());
+			int orderquantity = Integer.parseInt(calcText.substring(0, calcText.length() - 2));
+			currentInvoice.orderVoucher(voucherID, orderquantity, getVoucherById(voucherID).getPrice(),
+					getVoucherById(voucherID).getDescription());
 		}
 
 		notifyInvoiceChange();

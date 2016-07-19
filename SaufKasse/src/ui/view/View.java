@@ -125,7 +125,7 @@ public class View extends JFrame implements Observer {
 			InvoiceAlert ia = (InvoiceAlert) arg;
 			infoTopArea.updateAfterInvoiceChange(ia);
 
-			if (ia.getInvoice().getInvoiceSum() == 0) {
+			if (ia.getInvoice().getInvoiceLines().size() == 0) {
 				buttonButtomPanel.setChangeToPaymodeEnabled(false);
 			} else {
 				buttonButtomPanel.setChangeToPaymodeEnabled(true);
@@ -140,14 +140,12 @@ public class View extends JFrame implements Observer {
 
 	public void changeToPayMode() {
 		buttonButtomPanel.changeToPayMode();
-		infoTopArea.changeToPayMode();
 		repaint();
 		revalidate();
 	}
 
 	public void changeToSellingMode() {
 		buttonButtomPanel.changeToSellingMode();
-		infoTopArea.changeToSellingMode();
 		repaint();
 		revalidate();
 	}

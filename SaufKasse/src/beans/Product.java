@@ -6,13 +6,15 @@ public class Product {
 	private String name;
 	private int prodCat;
 	private int voucherID;
+	private boolean includeDeposit;
 
-	public Product(int id, String name, int prodCat, int voucher) {
+	public Product(int id, String name, int prodCat, int voucher, boolean incDeposit) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.prodCat = prodCat;
 		this.voucherID = voucher;
+		this.includeDeposit = incDeposit;
 	}
 
 	public Product() {
@@ -49,6 +51,14 @@ public class Product {
 
 	public void setVoucherID(int voucher) {
 		this.voucherID = voucher;
+	}
+
+	public boolean isDepositIncluded() {
+		return includeDeposit;
+	}
+
+	public void setDepositIncluded(boolean includeDeposit) {
+		this.includeDeposit = includeDeposit;
 	}
 	
 	

@@ -1,11 +1,14 @@
 package ui.panels;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
+import javax.swing.border.TitledBorder;
 
 import controller.Controller;
 import interfaces.PaySellingChangerInterface;
@@ -30,6 +33,8 @@ public class CalculatorPanel extends AbstractKassenPanel implements PaySellingCh
 
 	public CalculatorPanel(Controller controller) {
 		super();
+		
+		setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Rechner", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(128, 128, 128)));
 
 		paymode = false;
 

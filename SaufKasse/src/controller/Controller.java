@@ -29,19 +29,16 @@ public class Controller implements ActionListener, ListSelectionListener {
 
 		selectedInvoiceLineStart = -1;
 		selectedInvoiceLineEnd = -1;
-
 	}
 
 	public void addViewToController(View v) {
 		view = v;
 		model.addObserver(view);
 		view.initialize(model.getAllProducts(), model.getAllVouchers());
-
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		System.out.println(arg0.getActionCommand());
 
 			// order products
 			for (int i = 0; i < model.getAllProducts().size(); i++) {
@@ -68,7 +65,7 @@ public class Controller implements ActionListener, ListSelectionListener {
 						return;
 					}
 				} catch (NumberFormatException e) {
-					
+					//catch when no number - nothing to do
 				}
 			}
 			if (arg0.getActionCommand() == ",") {
@@ -141,6 +138,7 @@ public class Controller implements ActionListener, ListSelectionListener {
 				}
 				return;
 			} else if (arg0.getActionCommand() == "Test"){
+				@SuppressWarnings("unused")
 				StatisticFrame sf = new StatisticFrame(model);
 			}
 
