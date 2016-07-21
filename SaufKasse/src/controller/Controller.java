@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.DefaultListSelectionModel;
+import javax.swing.JFrame;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -18,6 +19,8 @@ public class Controller implements ActionListener, ListSelectionListener {
 	private Model model;
 
 	private View view;
+	
+	private StatisticFrame sf;
 
 	private int selectedInvoiceLineStart;
 	private int selectedInvoiceLineEnd;
@@ -138,8 +141,12 @@ public class Controller implements ActionListener, ListSelectionListener {
 				}
 				return;
 			} else if (arg0.getActionCommand() == "Test"){
-				@SuppressWarnings("unused")
-				StatisticFrame sf = new StatisticFrame(model);
+				if (sf == null){
+					sf = new StatisticFrame(model);
+				} 
+				
+				sf.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+				sf.setVisible(true);
 			}
 
 	}
