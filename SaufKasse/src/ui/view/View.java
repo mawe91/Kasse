@@ -1,5 +1,7 @@
 package ui.view;
 
+import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -18,6 +20,7 @@ import alertobjects.OpenSumAlert;
 import beans.Product;
 import beans.Voucher;
 import controller.Controller;
+import statistics.StatisticPanel;
 import ui.panels.ScreenControlArea;
 import ui.panels.ScreenInfoArea;
 import utilities.Variables;
@@ -39,23 +42,37 @@ public class View extends JFrame implements Observer {
 
 	private Container c;
 
+	private JTabbedPane tabbedMasterPane;
+
 	public View(Controller controller) {
 		super("Kasse");
+		
+		tabbedMasterPane = new JTabbedPane();
 				
 		c = getContentPane();
-		c.setLayout(new GridLayout(2, 1));
+		c.setLayout(new BorderLayout());
 
 		initJMenu(controller);
 		
-		infoTopArea = new ScreenInfoArea(controller);
-		add(infoTopArea);
-
-		buttonButtomPanel = new ScreenControlArea(controller);
-		add(buttonButtomPanel);
-
+		tabbedMasterPane.add("Kasse", initCheckoutPanel(controller));
+		tabbedMasterPane.add("Auswertung", new StatisticPanel(controller.getModel()));
+		
+		add(tabbedMasterPane, BorderLayout.CENTER);
+	
 		setSize(new Dimension(1024, 768));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
+	}
+
+	private JPanel initCheckoutPanel (Controller con){
+		JPanel checkoutPanel = new JPanel(new GridLayout(2, 1));
+		infoTopArea = new ScreenInfoArea(con);
+		checkoutPanel.add(infoTopArea);
+
+		buttonButtomPanel = new ScreenControlArea(con);
+		checkoutPanel.add(buttonButtomPanel);
+
+		return checkoutPanel;
 	}
 
 	private void initJMenu(Controller handler) {
@@ -75,16 +92,6 @@ public class View extends JFrame implements Observer {
 		
 		menuItem = new JMenuItem("Schrift -");
 		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, ActionEvent.CTRL_MASK));
-		menuItem.setFont(Variables.menuFont);
-		menuItem.addActionListener(handler);
-		menu.add(menuItem);
-
-		menu = new JMenu("Statistics");
-		menu.getAccessibleContext().setAccessibleDescription("Awesome Statistics");
-		menu.setFont(Variables.menuFont);
-		menuBar.add(menu);
-		
-		menuItem = new JMenuItem("Test");
 		menuItem.setFont(Variables.menuFont);
 		menuItem.addActionListener(handler);
 		menu.add(menuItem);

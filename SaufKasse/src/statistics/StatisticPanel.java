@@ -51,14 +51,12 @@ import org.jfree.data.general.DefaultPieDataset;
 import model.Model;
 import utilities.Variables;
 
-public class StatisticFrame extends JFrame {
+public class StatisticPanel extends JPanel {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private Panel panel1;
-	private Panel panel2;
 
 	private Container c;
 	private Model model;
@@ -76,18 +74,19 @@ public class StatisticFrame extends JFrame {
 	private JTextField txfSoldMinusReturnDeposit;
 
 	private ArrayList<JComponent> uiRepo;
+	private ArrayList<ChartPanel> chartRepo;
 
-	public StatisticFrame(Model model) {
-		super("Statistiken");
+	public StatisticPanel(Model model) {
+		super();
 
 		this.model = model;
 		uiRepo = new ArrayList<>();
+		chartRepo = new ArrayList<>();
 		format = new DecimalFormat("#0.00 €");
 
-		c = getContentPane();
-		c.setLayout(new CardLayout());
+		setLayout(new CardLayout());
 
-		c.add(initChartTabbedPane(), BorderLayout.CENTER);
+		add(initChartTabbedPane(), BorderLayout.CENTER);
 	}
 
 	// unused
@@ -238,6 +237,7 @@ public class StatisticFrame extends JFrame {
 	        plot.setLabelGenerator(gen);
 
 		ChartPanel chartpanel = new ChartPanel(chart);
+		chartRepo.add(chartpanel);
 		panel.add(chartpanel, BorderLayout.CENTER);
 		return panel;
 	}
@@ -251,6 +251,7 @@ public class StatisticFrame extends JFrame {
 		catplot.setRangeGridlinePaint(Color.BLACK);
 		
 		ChartPanel chartpanel = new ChartPanel(chart);
+		chartRepo.add(chartpanel);
 		panel.removeAll();
 		panel.add(chartpanel, BorderLayout.CENTER);
 
@@ -390,6 +391,15 @@ public class StatisticFrame extends JFrame {
 		txfSoldVouchersWithoutProductWithoutDeposit.setText("" + model.getSoldVouchersWithoutDepositWithoutProducts());
 		txfSoldVouchersWithoutDepositWithProducts.setText("" + model.getSoldVouchersWithoutDepositWithProducts());
 		txfSoldMinusReturnDeposit.setText("" + model.getSoldAndRefundDepositDifference());
+	}
+
+	public void updateCharts() {
+
+		for (int i = 0; i < chartRepo.size(); i++) {
+			chartRepo.get(i).repaint();
+			repaint();
+		}
+		
 	}
 
 }
