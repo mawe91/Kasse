@@ -123,7 +123,7 @@ public class Model extends Observable {
 			// Pfand buchen wenn notwendig
 			if (getProductById(productID).isDepositIncluded()) {
 				currentInvoice.orderProduct(Variables.ProductDepositID, Variables.voucherDepositID,
-						getVoucherById(vid).getPrice(), "Pfand");
+						getVoucherById(vid).getPrice(), getProductById(Variables.ProductDepositID).getName());
 			}
 
 		} else {
