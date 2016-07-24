@@ -396,7 +396,7 @@ public class Model extends Observable {
 		
 		ArrayList<Voucher> ar = new ArrayList<>();
 		for (int i = 0; i < getAllVouchers().size(); i++) {
-			if (getAllVouchers().get(i).getId() != Variables.voucherDepositID || getAllVouchers().get(i).getId() != Variables.voucherDepositReturnID){
+			if (getAllVouchers().get(i).getId() != Variables.voucherDepositID && getAllVouchers().get(i).getId() != Variables.voucherDepositReturnID){
 				ar.add(getAllVouchers().get(i));
 			}
 		}
@@ -409,8 +409,9 @@ public class Model extends Observable {
 		
 		ArrayList<Product> ar = new ArrayList<>();
 		for (int i = 0; i < getAllProducts().size(); i++) {
-			if (getAllProducts().get(i).getId() != Variables.ProductDepositID ||getAllProducts().get(i).getId() != Variables.ProductDepositReturnID){
+			if (getAllProducts().get(i).getId() != Variables.ProductDepositID && getAllProducts().get(i).getId() != Variables.ProductDepositReturnID){
 				ar.add(getAllProducts().get(i));
+				System.out.println("Product ID nich 18 oder 19:"+getAllProducts().get(i).getId());
 			}
 		}
 		return getSoldCountDataset("product", ar);

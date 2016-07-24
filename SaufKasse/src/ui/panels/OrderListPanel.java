@@ -38,14 +38,17 @@ public class OrderListPanel extends AbstractKassenPanel {
 		orderTable = new JTable(orderTableModel);
 
 		// Max Size second Column
-		orderTable.getColumnModel().getColumn(1).setMaxWidth(1000);
-		orderTable.getColumnModel().getColumn(1).setMinWidth(150);
-
+		orderTable.getColumnModel().getColumn(0).setPreferredWidth(400);
+		orderTable.getColumnModel().getColumn(1).setPreferredWidth(20);
+		orderTable.getColumnModel().getColumn(2).setPreferredWidth(30);
+		
 		// Orinatation Center in second column
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
 		orderTable.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
-
+		orderTable.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
+		
+		
 		// Row hight
 		orderTable.setRowHeight(40);
 
