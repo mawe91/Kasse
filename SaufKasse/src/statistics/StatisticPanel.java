@@ -224,10 +224,6 @@ public class StatisticPanel extends JPanel {
 	public void updateCharts() {
 
 		removeAll();
-
-		//ChartPanel cp = (ChartPanel) tabbedPane.getComponent(tabbedPane.getSelectedIndex()).getComponentAt(0, 0);
-		//System.out.println(cp.getChart().getXYPlot().getDataset().);
-		//model.getSoldVoucherDatasetWithoutDeposit();
 		
 		uiRepo = new ArrayList<>();
 		chartRepo = new ArrayList<>();
