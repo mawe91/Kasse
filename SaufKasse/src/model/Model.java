@@ -411,7 +411,6 @@ public class Model extends Observable {
 		for (int i = 0; i < getAllProducts().size(); i++) {
 			if (getAllProducts().get(i).getId() != Variables.ProductDepositID && getAllProducts().get(i).getId() != Variables.ProductDepositReturnID){
 				ar.add(getAllProducts().get(i));
-				System.out.println("Product ID nich 18 oder 19:"+getAllProducts().get(i).getId());
 			}
 		}
 		return getSoldCountDataset("product", ar);

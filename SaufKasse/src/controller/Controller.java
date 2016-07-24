@@ -42,7 +42,6 @@ public class Controller implements ActionListener, ListSelectionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		System.out.println(arg0.getActionCommand());
 
 			// order products
 			for (int i = 0; i < model.getAllProducts().size(); i++) {
