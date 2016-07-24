@@ -88,7 +88,6 @@ public class OrderListPanel extends AbstractKassenPanel {
 				name =  name.replace("<br>", " ");
 				orderTableModel.addRow(
 						new Object[] { name, "" + il.getCount(), Variables.moneyFormatter.format(il.getInvoiceLineSum())});
-
 			}
 
 		}

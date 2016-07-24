@@ -113,7 +113,7 @@ public class Model extends Observable {
 			// Pfand buchen wenn notwendig
 			if (getProductById(productID).isDepositIncluded()) {
 				currentInvoice.orderProduct(Variables.productDepositID, Variables.voucherDepositID,
-						getVoucherById(vid).getPrice(), getProductById(Variables.productDepositID).getName());
+						getVoucherById(Variables.voucherDepositID).getPrice(), getProductById(Variables.productDepositID).getName());
 			}
 
 		} else {
@@ -125,7 +125,7 @@ public class Model extends Observable {
 			// Pfand buchen wenn notwendig
 			if (getProductById(productID).isDepositIncluded()) {
 				currentInvoice.orderProduct(Variables.productDepositID, Variables.voucherDepositID, orderquantity,
-						getVoucherById(vid).getPrice(), getProductById(Variables.productDepositID).getName());
+						getVoucherById(Variables.voucherDepositID).getPrice(), getProductById(Variables.productDepositID).getName());
 			}
 		}
 
