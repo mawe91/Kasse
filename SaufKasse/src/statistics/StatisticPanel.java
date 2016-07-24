@@ -243,7 +243,7 @@ public class StatisticPanel extends JPanel {
 
 	private JPanel generateBarChartPanel(String graphName, DefaultCategoryDataset dataset) {
 		JPanel panel = new JPanel(new BorderLayout());
-
+		
 		JFreeChart chart = ChartFactory.createBarChart(graphName, "", "", dataset, PlotOrientation.HORIZONTAL, true,
 				true, false);
 		CategoryPlot catplot = chart.getCategoryPlot();

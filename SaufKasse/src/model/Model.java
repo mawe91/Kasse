@@ -315,15 +315,21 @@ public class Model extends Observable {
 
 		for (int i = 0; i < entityArray.size(); i++) {
 			String name;
+			int id;
 			if (entity.equals("product")) {
-				name = getProductById(i + 1).getName();
+				Product p = (Product) entityArray.get(i);
+				name = p.getName();
+				id=p.getId();
 			} else {
-				name = getVoucherById(i + 1).getDescription();
+				Voucher v = (Voucher) entityArray.get(i);
+				name = v.getDescription();
 				name = Jsoup.parse(name).text();
+				id =v.getId();
 			}
-			dataset.setValue(dbh.getPurchaseCountWhere(entity + "=" + (i + 1)), "", name);
+			System.out.println(entityArray.get(i).toString());
+			dataset.setValue(dbh.getPurchaseCountWhere(entity + "=" + (id)), "", name);
 		}
-
+		System.out.println("-----");
 		return dataset;
 	}
 
