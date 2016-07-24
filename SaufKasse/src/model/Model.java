@@ -326,10 +326,8 @@ public class Model extends Observable {
 				name = Jsoup.parse(name).text();
 				id =v.getId();
 			}
-			System.out.println(entityArray.get(i).toString());
 			dataset.setValue(dbh.getPurchaseCountWhere(entity + "=" + (id)), "", name);
 		}
-		System.out.println("-----");
 		return dataset;
 	}
 
