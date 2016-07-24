@@ -394,18 +394,25 @@ public class Model extends Observable {
 
 	public DefaultCategoryDataset getSoldVoucherDatasetWithoutDeposit() {
 		
-		ArrayList<Voucher> ar = getAllVouchers();
-		ar.remove(Variables.voucherDepositReturnID-1);
-		ar.remove(Variables.voucherDepositID-1);
+		ArrayList<Voucher> ar = new ArrayList<>();
+		for (int i = 0; i < getAllVouchers().size(); i++) {
+			if (getAllVouchers().get(i).getId() != Variables.voucherDepositID || getAllVouchers().get(i).getId() != Variables.voucherDepositReturnID){
+				ar.add(getAllVouchers().get(i));
+			}
+		}
+		
 		return getSoldCountDataset("voucher",ar);
 		
 	}
 
 	public DefaultCategoryDataset getSoldProductsWithoutDeposit() {
 		
-		ArrayList<Product> ar = getAllProducts();
-		ar.remove(Variables.ProductDepositReturnID-1);
-		ar.remove(Variables.ProductDepositID-1);
+		ArrayList<Product> ar = new ArrayList<>();
+		for (int i = 0; i < getAllProducts().size(); i++) {
+			if (getAllProducts().get(i).getId() != Variables.ProductDepositID ||getAllProducts().get(i).getId() != Variables.ProductDepositReturnID){
+				ar.add(getAllProducts().get(i));
+			}
+		}
 		return getSoldCountDataset("product", ar);
 	}
 

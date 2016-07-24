@@ -13,6 +13,8 @@ import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import alertobjects.CalcFieldAlert;
 import alertobjects.InvoiceAlert;
@@ -32,11 +34,11 @@ import utilities.Variables;
 public class View extends JFrame implements Observer {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private JMenuBar menuBar;
 	private JMenu menu;
 	private JMenuItem menuItem;
-	
+
 	private ScreenInfoArea infoTopArea;
 	private ScreenControlArea buttonButtomPanel;
 
@@ -44,27 +46,41 @@ public class View extends JFrame implements Observer {
 
 	private JTabbedPane tabbedMasterPane;
 
+	private StatisticPanel statisticPanel;
+
 	public View(Controller controller) {
 		super("Kasse");
-		
+
 		tabbedMasterPane = new JTabbedPane();
-				
+
 		c = getContentPane();
 		c.setLayout(new BorderLayout());
 
 		initJMenu(controller);
 		
+		statisticPanel = new StatisticPanel(controller.getModel());
+
 		tabbedMasterPane.add("Kasse", initCheckoutPanel(controller));
-		tabbedMasterPane.add("Auswertung", new StatisticPanel(controller.getModel()));
-		
+		tabbedMasterPane.add("Auswertung", statisticPanel);
+
+		ChangeListener changeListener = new ChangeListener() {
+			public void stateChanged(ChangeEvent changeEvent) {
+				int index = tabbedMasterPane.getSelectedIndex();
+				if (index==1){
+					statisticPanel.updateCharts();
+				}
+			}
+		};
+		tabbedMasterPane.addChangeListener(changeListener);
+
 		add(tabbedMasterPane, BorderLayout.CENTER);
-	
+
 		setSize(new Dimension(1024, 768));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
 	}
 
-	private JPanel initCheckoutPanel (Controller con){
+	private JPanel initCheckoutPanel(Controller con) {
 		JPanel checkoutPanel = new JPanel(new GridLayout(2, 1));
 		infoTopArea = new ScreenInfoArea(con);
 		checkoutPanel.add(infoTopArea);
@@ -77,25 +93,25 @@ public class View extends JFrame implements Observer {
 
 	private void initJMenu(Controller handler) {
 		menuBar = new JMenuBar();
-		
+
 		menu = new JMenu("Datei");
 		menu.getAccessibleContext().setAccessibleDescription("Nice Menu");
 		menu.setFont(Variables.menuFont);
 		menuBar.add(menu);
-		
+
 		menuItem = new JMenuItem("Schrift +");
 		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_PLUS, ActionEvent.CTRL_MASK));
 		menuItem.getAccessibleContext().setAccessibleDescription("Nothing this code does");
 		menuItem.addActionListener(handler);
 		menuItem.setFont(Variables.menuFont);
 		menu.add(menuItem);
-		
+
 		menuItem = new JMenuItem("Schrift -");
 		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, ActionEvent.CTRL_MASK));
 		menuItem.setFont(Variables.menuFont);
 		menuItem.addActionListener(handler);
 		menu.add(menuItem);
-		
+
 		this.setJMenuBar(menuBar);
 	}
 
@@ -115,10 +131,8 @@ public class View extends JFrame implements Observer {
 	public int finishInvoiceFrame() {
 		String[] yesNoOptions = { "Best‰tigen", "Zahlung korrigieren", "Bon Abbrechen" };
 
-		
 		return JOptionPane.showOptionDialog(null, "Rechnung abschlieﬂen?", "Rechnungsabschluss",
 				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, yesNoOptions, yesNoOptions[0]);
-
 
 	}
 
@@ -169,7 +183,7 @@ public class View extends JFrame implements Observer {
 		buttonButtomPanel.changeFont(buttonAndComboFont);
 		infoTopArea.changeFont(buttonAndComboFont);
 		repaint();
-		revalidate();		
+		revalidate();
 	}
 
 }

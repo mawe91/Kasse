@@ -221,6 +221,24 @@ public class StatisticPanel extends JPanel {
 		return tabbedPane;
 	}
 	
+	public void updateCharts() {
+
+		removeAll();
+
+		//ChartPanel cp = (ChartPanel) tabbedPane.getComponent(tabbedPane.getSelectedIndex()).getComponentAt(0, 0);
+		//System.out.println(cp.getChart().getXYPlot().getDataset().);
+		//model.getSoldVoucherDatasetWithoutDeposit();
+		
+		uiRepo = new ArrayList<>();
+		chartRepo = new ArrayList<>();
+		add(initChartTabbedPane(), BorderLayout.CENTER);
+		
+		
+		repaint();
+		revalidate();
+		
+	}
+	
 	private JPanel generatePieChartPanel(String graphname, DefaultPieDataset dataset) {
 		JPanel panel = new JPanel(new BorderLayout());
 
@@ -393,13 +411,6 @@ public class StatisticPanel extends JPanel {
 		txfSoldMinusReturnDeposit.setText("" + model.getSoldAndRefundDepositDifference());
 	}
 
-	public void updateCharts() {
 
-		for (int i = 0; i < chartRepo.size(); i++) {
-			chartRepo.get(i).repaint();
-			repaint();
-		}
-		
-	}
 
 }
