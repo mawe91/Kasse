@@ -31,8 +31,9 @@ public class OrderButtonPanel extends AbstractKassenPanel implements PaySellingC
 
 	public void initialize(ArrayList<Product> alp, ArrayList<Voucher> alv) {
 
-		setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Produkte", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(128, 128, 128)));
-		
+		setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Produkte", TitledBorder.LEADING,
+				TitledBorder.TOP, null, new Color(128, 128, 128)));
+
 		uiElements = new ArrayList<JButton>();
 		removeAll();
 		revalidate();
@@ -67,15 +68,18 @@ public class OrderButtonPanel extends AbstractKassenPanel implements PaySellingC
 		}
 
 		int addedButtonsVoucher = 0;
-		for (int i = 0; i < alv.size() - 2; i++) {
-			Voucher voucher = alv.get(i);
-			buttonToAdd = generateNewJButton(voucher.getDescription(), listener, font);
-			setConstraintSettings(3, i, 0.5, 0.5, 1, 1);
-			buttonToAdd.setBackground(voucher.getColor());
-			buttonToAdd.setHorizontalAlignment(JButton.CENTER);
-			uiElements.add(buttonToAdd);
-			add(buttonToAdd, gbc);
-			addedButtonsVoucher++;
+		for (int i = 0; i < alv.size(); i++) {
+			if (alv.get(i).getId() != Variables.voucherDepositID
+					&& alv.get(i).getId() != Variables.voucherDepositReturnID) {
+				Voucher voucher = alv.get(i);
+				buttonToAdd = generateNewJButton(voucher.getDescription(), listener, font);
+				setConstraintSettings(3, addedButtonsVoucher, 0.5, 0.5, 1, 1);
+				buttonToAdd.setBackground(voucher.getColor());
+				buttonToAdd.setHorizontalAlignment(JButton.CENTER);
+				uiElements.add(buttonToAdd);
+				add(buttonToAdd, gbc);
+				addedButtonsVoucher++;
+			}
 		}
 
 		int maxRowCount = 0;
@@ -92,22 +96,21 @@ public class OrderButtonPanel extends AbstractKassenPanel implements PaySellingC
 			maxRowCount = addedButtonsVoucher;
 		}
 
-		int addedDepositButtons=0;
+		int addedDepositButtons = 0;
 		for (int i = 0; i < alp.size(); i++) {
 			Product p = alp.get(i);
 			if (p.getProdCat() == 5) {
 				int rowPosition = 0;
-				if(addedDepositButtons!=0){
+				if (addedDepositButtons != 0) {
 					rowPosition = 2 * addedDepositButtons;
 				}
-				setConstraintSettings(rowPosition, maxRowCount+1, 0.5, 0.5, 1, 2);
+				setConstraintSettings(rowPosition, maxRowCount + 1, 0.5, 0.5, 1, 2);
 				buttonToAdd = generateNewJButton(p.getName(), listener, font);
 				uiElements.add(buttonToAdd);
 				addedDepositButtons++;
 				add(buttonToAdd, gbc);
 			}
 		}
-		
 
 		repaint();
 		revalidate();

@@ -144,9 +144,9 @@ public class InvoiceSumPanel extends AbstractKassenPanel{
 		int depositCount = 0;
 		int depositReturnCount = 0;
 		for (int i = 0; i < inv.getInvoiceLines().size(); i++) {
-			if (inv.getInvoiceLines().get(i).getProductID() == Variables.ProductDepositID){
+			if (inv.getInvoiceLines().get(i).getProductID() == Variables.productDepositID){
 				depositCount = depositCount + inv.getInvoiceLines().get(i).getCount();
-			} else if (inv.getInvoiceLines().get(i).getProductID() == Variables.ProductDepositReturnID){
+			} else if (inv.getInvoiceLines().get(i).getProductID() == Variables.productDepositReturnID){
 				depositReturnCount = depositReturnCount + inv.getInvoiceLines().get(i).getCount();
 			}
 		}
