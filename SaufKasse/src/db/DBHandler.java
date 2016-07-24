@@ -250,12 +250,12 @@ public class DBHandler {
 
 	}
 
-	public int getProductPurchase(int pid) {
+	public int getPurchaseCountWhere(String strWhere) {
 
 		int count = -1;
 
 		try {
-			ResultSet rs = stmt.executeQuery("SELECT sum(count) FROM InvoiceLine WHERE product=" + pid + ";");
+			ResultSet rs = stmt.executeQuery("SELECT sum(count) FROM InvoiceLine WHERE " + strWhere + ";");
 			while (rs.next()) {
 				count = rs.getInt(1);
 			}
@@ -295,5 +295,23 @@ public class DBHandler {
 		}
 
 		return s1;
+	}
+
+	public double getTotalInEuro(String strWhere) {
+		double soldsum = 0;
+		try {
+			ResultSet rs = stmt.executeQuery(
+					"SELECT invoiceline.voucher, invoiceline.product, invoiceline.count, voucher.price FROM Invoiceline INNER JOIN Voucher ON Invoiceline.voucher=voucher.id WHERE "+strWhere+";");
+			while (rs.next()) {
+				int count = rs.getInt("count");
+				double price = rs.getDouble("price");
+				soldsum = soldsum + (count * price);
+				//System.out.println(""+count+" * " + price + " = " + (count * price) + " - Gesamt: "+ soldsum);
+			}
+			rs.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return soldsum;
 	}
 }

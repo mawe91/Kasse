@@ -6,9 +6,11 @@ import java.util.Locale;
 import java.util.Observable;
 
 import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.data.xy.XYDataset;
+import org.jsoup.Jsoup;
 
 import alertobjects.CalcFieldAlert;
 import alertobjects.InvoiceAlert;
@@ -118,9 +120,10 @@ public class Model extends Observable {
 			// einmal buchen
 			currentInvoice.orderProduct(productID, vid, getVoucherById(vid).getPrice(),
 					getProductById(productID).getName());
-			//Pfand buchen wenn notwendig
-			if (getProductById(productID).isDepositIncluded()){
-				currentInvoice.orderProduct(Variables.ProductDepositID, Variables.voucherDepositID, getVoucherById(vid).getPrice(), getProductById(Variables.ProductDepositID).getName());
+			// Pfand buchen wenn notwendig
+			if (getProductById(productID).isDepositIncluded()) {
+				currentInvoice.orderProduct(Variables.ProductDepositID, Variables.voucherDepositID,
+						getVoucherById(vid).getPrice(), getProductById(Variables.ProductDepositID).getName());
 			}
 
 		} else {
@@ -129,9 +132,10 @@ public class Model extends Observable {
 			int orderquantity = Integer.parseInt(calcText.substring(0, calcText.length() - 2));
 			currentInvoice.orderProduct(productID, vid, orderquantity, getVoucherById(vid).getPrice(),
 					getProductById(productID).getName());
-			//Pfand buchen wenn notwendig
-			if (getProductById(productID).isDepositIncluded()){
-				currentInvoice.orderProduct(Variables.ProductDepositID, Variables.voucherDepositID, orderquantity,getVoucherById(vid).getPrice(), getProductById(Variables.ProductDepositID).getName());
+			// Pfand buchen wenn notwendig
+			if (getProductById(productID).isDepositIncluded()) {
+				currentInvoice.orderProduct(Variables.ProductDepositID, Variables.voucherDepositID, orderquantity,
+						getVoucherById(vid).getPrice(), getProductById(Variables.ProductDepositID).getName());
 			}
 		}
 
@@ -316,11 +320,18 @@ public class Model extends Observable {
 		return true;
 	}
 
-	public DefaultCategoryDataset getSoldProductsDataset() {
+	public DefaultCategoryDataset getSoldCountDataset(String entity, ArrayList<?> entityArray) {
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 
-		for (int i = 0; i < getAllProducts().size(); i++) {
-			dataset.setValue(dbh.getProductPurchase(i + 1), "", getProductById(i + 1).getName());
+		for (int i = 0; i < entityArray.size(); i++) {
+			String name;
+			if (entity.equals("product")){
+				name = getProductById(i + 1).getName();
+			} else {
+				name = getVoucherById(i + 1).getDescription();
+				name = Jsoup.parse(name).text();
+			}
+			dataset.setValue(dbh.getPurchaseCountWhere(entity + "=" + (i + 1)), "", name);
 		}
 
 		return dataset;
@@ -337,6 +348,81 @@ public class Model extends Observable {
 
 		return dataset;
 
+	}
+
+	public double getTotalSaleSum() {
+
+		return dbh.getTotalInEuro("invoiceline.voucher>0");
+	}
+
+	public double getTotalDepositSum() {
+		return dbh.getTotalInEuro("invoiceline.product='18' OR invoiceline.product='19'");
+	}
+
+	public double getTotalVoucherSum() {
+		return dbh.getTotalInEuro("invoiceline.product IS NULL");
+	}
+
+	public double getTotalProductSum() {
+
+		return dbh.getTotalInEuro("invoiceline.product IS NOT NULL");
+	}
+
+	public int getSoldProductWithoutVoucher() {
+
+		int count = 0;
+		for (int i = 1; i < Variables.ProductDepositID; i++) {
+			count = count + dbh.getPurchaseCountWhere("product=" + i);
+		}
+		return count;
+	}
+
+	public int getSoldVouchersWithoutDepositWithoutProducts() {
+
+		return dbh.getPurchaseCountWhere("product IS NULL");
+	}
+
+	public int getSoldVouchersWithoutDepositWithProducts() {
+
+		return dbh.getPurchaseCountWhere("product IS NOT '18' AND product IS NOT '19'");
+	}
+
+	public int getSoldAndRefundDepositDifference() {
+		int count = dbh.getPurchaseCountWhere("product='18'") - dbh.getPurchaseCountWhere("product='19'");
+		return count;
+	}
+
+	public DefaultCategoryDataset getSoldVoucherDatasetWithoutDeposit() {
+		
+		ArrayList<Voucher> ar = new ArrayList<>();
+		for (int i = 0; i < getAllVouchers().size(); i++) {
+			if (getAllVouchers().get(i).getId() != Variables.voucherDepositID || getAllVouchers().get(i).getId() != Variables.voucherDepositReturnID){
+				ar.add(getAllVouchers().get(i));
+			}
+		}
+		
+		return getSoldCountDataset("voucher",ar);
+		
+	}
+
+	public DefaultCategoryDataset getSoldProductsWithoutDeposit() {
+		
+		ArrayList<Product> ar = new ArrayList<>();
+		for (int i = 0; i < getAllProducts().size(); i++) {
+			if (getAllProducts().get(i).getId() != Variables.ProductDepositID ||getAllProducts().get(i).getId() != Variables.ProductDepositReturnID){
+				ar.add(getAllProducts().get(i));
+			}
+		}
+		return getSoldCountDataset("product", ar);
+	}
+
+	public DefaultPieDataset getDepositPieData() {
+		
+		DefaultPieDataset dataset = new DefaultPieDataset();
+		dataset.setValue("Pfand Ausgabe", dbh.getPurchaseCountWhere("product="+ Variables.ProductDepositID));
+		dataset.setValue("Pfand Rückgabe", dbh.getPurchaseCountWhere("product="+ Variables.ProductDepositReturnID));
+		
+		return dataset;
 	}
 
 }

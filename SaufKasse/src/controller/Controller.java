@@ -5,11 +5,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.DefaultListSelectionModel;
+import javax.swing.JFrame;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import model.Model;
-import statistics.StatisticFrame;
+import statistics.StatisticPanel;
 import ui.view.View;
 import utilities.Variables;
 
@@ -18,6 +19,8 @@ public class Controller implements ActionListener, ListSelectionListener {
 	private Model model;
 
 	private View view;
+	
+	private StatisticPanel sf;
 
 	private int selectedInvoiceLineStart;
 	private int selectedInvoiceLineEnd;
@@ -39,6 +42,7 @@ public class Controller implements ActionListener, ListSelectionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
+		System.out.println(arg0.getActionCommand());
 
 			// order products
 			for (int i = 0; i < model.getAllProducts().size(); i++) {
@@ -137,9 +141,6 @@ public class Controller implements ActionListener, ListSelectionListener {
 					view.changeFont(Variables.buttonAndComboFont);
 				}
 				return;
-			} else if (arg0.getActionCommand() == "Test"){
-				@SuppressWarnings("unused")
-				StatisticFrame sf = new StatisticFrame(model);
 			}
 
 	}
@@ -183,5 +184,9 @@ public class Controller implements ActionListener, ListSelectionListener {
 				view.setZeilenstornoEnabled(false);
 			}
 		}
+	}
+
+	public Model getModel() {
+		return model;
 	}
 }
