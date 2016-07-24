@@ -1,6 +1,7 @@
 package utilities;
 
 import java.awt.Font;
+import java.text.DecimalFormat;
 
 public class Variables {
 
@@ -12,4 +13,6 @@ public class Variables {
 	
 	public static int voucherDepositID = 8;
 	public static int voucherDepositReturnID = 9;
+	
+	public static DecimalFormat moneyFormatter = new DecimalFormat("#0.00 €");
 }

@@ -34,6 +34,7 @@ public class OrderListPanel extends AbstractKassenPanel {
 		orderTableModel = new DefaultTableModel();
 		orderTableModel.addColumn("Produkte");
 		orderTableModel.addColumn("Menge");
+		orderTableModel.addColumn("Preis");
 		orderTable = new JTable(orderTableModel);
 
 		// Max Size second Column
@@ -61,7 +62,6 @@ public class OrderListPanel extends AbstractKassenPanel {
 
 		orderTable.getSelectionModel().addListSelectionListener(controller);
 		
-		//setBorder(getNewTitledBorder(""));
 	}
 
 	public void resetOrderList() {
@@ -84,7 +84,7 @@ public class OrderListPanel extends AbstractKassenPanel {
 				String name = il.getVoucherOrProductName();
 				name =  name.replace("<br>", " ");
 				orderTableModel.addRow(
-						new Object[] { name, "" + il.getCount() });
+						new Object[] { name, "" + il.getCount(), Variables.moneyFormatter.format(il.getInvoiceLineSum())});
 
 			}
 
