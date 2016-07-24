@@ -22,63 +22,79 @@ public class VoucherPanel extends AbstractKassenPanel {
 	ArrayList<Voucher> voucherAl;
 	ArrayList<JLabel> voucherCountLabels;
 	ArrayList<JLabel> voucherNameLabels;
-	
+
 	public VoucherPanel() {
 		super();
 		voucherCountLabels = new ArrayList<JLabel>();
 		voucherNameLabels = new ArrayList<JLabel>();
-		
+
 		// Implementation of Voucher
 		voucherAl = new ArrayList<Voucher>();
 	}
 
-	//achtung fieser hack
-	//Wil ein Märckchen 2 Voucher hat
+	// achtung fieser hack
+	// Wil ein Märckchen 2 Voucher hat
 	public void updateVoucherCount(Map<Integer, Integer> voucherMap) {
 		
 		for (int i = 0; i < voucherCountLabels.size(); i++) {
+			
+			//System.out.println(voucherNameLabels.get(i).getText() + " Count: "+ voucherMap.get(i+1));
+			
 			Integer vIDCount = voucherMap.get(i + 1);
 			if (vIDCount == null) {
 				vIDCount = 0;
 			}
-			if (i == 5){
-				if (voucherMap.get(i+2) == null) {
-					//nothing to add
+			if (i == Variables.secondVoucherMittag - 2) {
+				if (voucherMap.get(Variables.secondVoucherMittag) == null) {
+					// nothing to add
 				} else {
-					vIDCount = vIDCount + voucherMap.get(i+2);
+					vIDCount = vIDCount + voucherMap.get(Variables.secondVoucherMittag);
 				}
-				
 			}
 			voucherCountLabels.get(i).setText("" + vIDCount);
 		}
+		
 
 	}
 
 	public void initialize(ArrayList<Voucher> alv) {
-		
-		setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Märkchen", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(128, 128, 128)));
 
-		//exclude Mittag als extra märkchen
-		for (int i = 0; i < alv.size()-3; i++) {
+		setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Märkchen", TitledBorder.LEADING,
+				TitledBorder.TOP, null, new Color(128, 128, 128)));
+
+		// exclude Mittag als extra märkchen
+		for (int i = 0; i < alv.size(); i++) {
+
 			setConstraintSettings(0, i, 0.5, 0.5, 1, 1);
-			JLabel jl = new JLabel(alv.get(i).getDescription());
-			jl.setHorizontalAlignment(JLabel.CENTER);
-			jl.setFont(Variables.buttonAndComboFont);
-			jl.setOpaque(true);
-			jl.setBackground(alv.get(i).getColor());
-			jl.setForeground(Color.BLACK);
-			voucherNameLabels.add(jl);
-			add(jl,gbc);
-			
+			JLabel jl1 = new JLabel(alv.get(i).getDescription());
+			jl1.setHorizontalAlignment(JLabel.CENTER);
+			jl1.setFont(Variables.buttonAndComboFont);
+			jl1.setOpaque(true);
+			jl1.setBackground(alv.get(i).getColor());
+			jl1.setForeground(Color.BLACK);
+			voucherNameLabels.add(jl1);
+			add(jl1, gbc);
+
 			setConstraintSettings(1, i, 0.5, 0.5, 1, 1);
-			jl = new JLabel("0");
-			jl.setHorizontalAlignment(JLabel.CENTER);
-			jl.setFont(Variables.buttonAndComboFont);
-			jl.setOpaque(true);
-			jl.setBackground(alv.get(i).getColor());
-			jl.setForeground(Color.BLACK);
-			voucherCountLabels.add(jl);
-			add(jl, gbc);
+			JLabel jl2 = new JLabel("0");
+			jl2.setHorizontalAlignment(JLabel.CENTER);
+			jl2.setFont(Variables.buttonAndComboFont);
+			jl2.setOpaque(true);
+			jl2.setBackground(alv.get(i).getColor());
+			jl2.setForeground(Color.BLACK);
+			voucherCountLabels.add(jl2);
+			add(jl2, gbc);
+
+			if (alv.get(i).getId() != Variables.voucherDepositReturnID
+					&& alv.get(i).getId() != Variables.voucherDepositID
+					&& alv.get(i).getId() != Variables.secondVoucherMittag) {
+				jl1.setVisible(true);
+				jl2.setVisible(true);
+			} else {
+				jl1.setVisible(false);
+				jl2.setVisible(false);
+			}
+
 		}
 
 		repaint();

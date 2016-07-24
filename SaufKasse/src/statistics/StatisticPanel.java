@@ -1,29 +1,19 @@
 package statistics;
 
-import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
-import java.awt.Panel;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
-import javax.swing.AbstractButton;
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
@@ -36,15 +26,11 @@ import javax.swing.border.TitledBorder;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.axis.DateAxis;
 import org.jfree.chart.labels.PieSectionLabelGenerator;
 import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PiePlot;
 import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.chart.plot.XYPlot;
-import org.jfree.chart.renderer.xy.StandardXYItemRenderer;
-import org.jfree.chart.renderer.xy.XYItemRenderer;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 
@@ -58,7 +44,6 @@ public class StatisticPanel extends JPanel {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private Container c;
 	private Model model;
 
 	private DecimalFormat format;
@@ -258,7 +243,7 @@ public class StatisticPanel extends JPanel {
 
 	private JPanel generateBarChartPanel(String graphName, DefaultCategoryDataset dataset) {
 		JPanel panel = new JPanel(new BorderLayout());
-
+		
 		JFreeChart chart = ChartFactory.createBarChart(graphName, "", "", dataset, PlotOrientation.HORIZONTAL, true,
 				true, false);
 		CategoryPlot catplot = chart.getCategoryPlot();

@@ -34,17 +34,21 @@ public class OrderListPanel extends AbstractKassenPanel {
 		orderTableModel = new DefaultTableModel();
 		orderTableModel.addColumn("Produkte");
 		orderTableModel.addColumn("Menge");
+		orderTableModel.addColumn("Preis");
 		orderTable = new JTable(orderTableModel);
 
 		// Max Size second Column
-		orderTable.getColumnModel().getColumn(1).setMaxWidth(1000);
-		orderTable.getColumnModel().getColumn(1).setMinWidth(150);
-
+		orderTable.getColumnModel().getColumn(0).setPreferredWidth(400);
+		orderTable.getColumnModel().getColumn(1).setPreferredWidth(20);
+		orderTable.getColumnModel().getColumn(2).setPreferredWidth(30);
+		
 		// Orinatation Center in second column
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
 		orderTable.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
-
+		orderTable.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
+		
+		
 		// Row hight
 		orderTable.setRowHeight(40);
 
@@ -61,7 +65,6 @@ public class OrderListPanel extends AbstractKassenPanel {
 
 		orderTable.getSelectionModel().addListSelectionListener(controller);
 		
-		//setBorder(getNewTitledBorder(""));
 	}
 
 	public void resetOrderList() {
@@ -84,8 +87,7 @@ public class OrderListPanel extends AbstractKassenPanel {
 				String name = il.getVoucherOrProductName();
 				name =  name.replace("<br>", " ");
 				orderTableModel.addRow(
-						new Object[] { name, "" + il.getCount() });
-
+						new Object[] { name, "" + il.getCount(), Variables.moneyFormatter.format(il.getInvoiceLineSum())});
 			}
 
 		}

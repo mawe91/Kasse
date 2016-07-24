@@ -98,16 +98,6 @@ public class Model extends Observable {
 		return null;
 	}
 
-	private ArrayList<Product> getProductsByCategory(int catid) {
-		ArrayList<Product> al = new ArrayList<Product>();
-		for (int i = 0; i < getAllProducts().size(); i++) {
-			if (getAllProducts().get(i).getProdCat() == catid) {
-				al.add(getAllProducts().get(i));
-			}
-		}
-		return al;
-	}
-
 	// Booking
 	public void orderProduct(int productID) {
 
@@ -122,8 +112,8 @@ public class Model extends Observable {
 					getProductById(productID).getName());
 			// Pfand buchen wenn notwendig
 			if (getProductById(productID).isDepositIncluded()) {
-				currentInvoice.orderProduct(Variables.ProductDepositID, Variables.voucherDepositID,
-						getVoucherById(vid).getPrice(), getProductById(Variables.ProductDepositID).getName());
+				currentInvoice.orderProduct(Variables.productDepositID, Variables.voucherDepositID,
+						getVoucherById(Variables.voucherDepositID).getPrice(), getProductById(Variables.productDepositID).getName());
 			}
 
 		} else {
@@ -134,8 +124,8 @@ public class Model extends Observable {
 					getProductById(productID).getName());
 			// Pfand buchen wenn notwendig
 			if (getProductById(productID).isDepositIncluded()) {
-				currentInvoice.orderProduct(Variables.ProductDepositID, Variables.voucherDepositID, orderquantity,
-						getVoucherById(vid).getPrice(), getProductById(Variables.ProductDepositID).getName());
+				currentInvoice.orderProduct(Variables.productDepositID, Variables.voucherDepositID, orderquantity,
+						getVoucherById(Variables.voucherDepositID).getPrice(), getProductById(Variables.productDepositID).getName());
 			}
 		}
 
@@ -325,15 +315,19 @@ public class Model extends Observable {
 
 		for (int i = 0; i < entityArray.size(); i++) {
 			String name;
-			if (entity.equals("product")){
-				name = getProductById(i + 1).getName();
+			int id;
+			if (entity.equals("product")) {
+				Product p = (Product) entityArray.get(i);
+				name = p.getName();
+				id=p.getId();
 			} else {
-				name = getVoucherById(i + 1).getDescription();
+				Voucher v = (Voucher) entityArray.get(i);
+				name = v.getDescription();
 				name = Jsoup.parse(name).text();
+				id =v.getId();
 			}
-			dataset.setValue(dbh.getPurchaseCountWhere(entity + "=" + (i + 1)), "", name);
+			dataset.setValue(dbh.getPurchaseCountWhere(entity + "=" + (id)), "", name);
 		}
-
 		return dataset;
 	}
 
@@ -356,7 +350,8 @@ public class Model extends Observable {
 	}
 
 	public double getTotalDepositSum() {
-		return dbh.getTotalInEuro("invoiceline.product='18' OR invoiceline.product='19'");
+		return dbh.getTotalInEuro("invoiceline.product='" + Variables.productDepositID + "' OR invoiceline.product='"
+				+ Variables.productDepositReturnID + "'");
 	}
 
 	public double getTotalVoucherSum() {
@@ -371,7 +366,7 @@ public class Model extends Observable {
 	public int getSoldProductWithoutVoucher() {
 
 		int count = 0;
-		for (int i = 1; i < Variables.ProductDepositID; i++) {
+		for (int i = 1; i < Variables.productDepositID; i++) {
 			count = count + dbh.getPurchaseCountWhere("product=" + i);
 		}
 		return count;
@@ -384,32 +379,35 @@ public class Model extends Observable {
 
 	public int getSoldVouchersWithoutDepositWithProducts() {
 
-		return dbh.getPurchaseCountWhere("product IS NOT '18' AND product IS NOT '19'");
+		return dbh.getPurchaseCountWhere("product IS NOT '" + Variables.productDepositID + "' AND product IS NOT '"
+				+ Variables.productDepositReturnID + "'");
 	}
 
 	public int getSoldAndRefundDepositDifference() {
-		int count = dbh.getPurchaseCountWhere("product='18'") - dbh.getPurchaseCountWhere("product='19'");
-		return count;
+		return dbh.getPurchaseCountWhere("product='" + Variables.productDepositID + "'")
+				- dbh.getPurchaseCountWhere("product='" + Variables.productDepositReturnID + "'");
 	}
 
 	public DefaultCategoryDataset getSoldVoucherDatasetWithoutDeposit() {
-		
+
 		ArrayList<Voucher> ar = new ArrayList<>();
 		for (int i = 0; i < getAllVouchers().size(); i++) {
-			if (getAllVouchers().get(i).getId() != Variables.voucherDepositID || getAllVouchers().get(i).getId() != Variables.voucherDepositReturnID){
+			if (getAllVouchers().get(i).getId() != Variables.voucherDepositID
+					&& getAllVouchers().get(i).getId() != Variables.voucherDepositReturnID) {
 				ar.add(getAllVouchers().get(i));
 			}
 		}
-		
-		return getSoldCountDataset("voucher",ar);
-		
+
+		return getSoldCountDataset("voucher", ar);
+
 	}
 
 	public DefaultCategoryDataset getSoldProductsWithoutDeposit() {
-		
+
 		ArrayList<Product> ar = new ArrayList<>();
 		for (int i = 0; i < getAllProducts().size(); i++) {
-			if (getAllProducts().get(i).getId() != Variables.ProductDepositID ||getAllProducts().get(i).getId() != Variables.ProductDepositReturnID){
+			if (getAllProducts().get(i).getId() != Variables.productDepositID
+					&& getAllProducts().get(i).getId() != Variables.productDepositReturnID) {
 				ar.add(getAllProducts().get(i));
 			}
 		}
@@ -417,11 +415,11 @@ public class Model extends Observable {
 	}
 
 	public DefaultPieDataset getDepositPieData() {
-		
+
 		DefaultPieDataset dataset = new DefaultPieDataset();
-		dataset.setValue("Pfand Ausgabe", dbh.getPurchaseCountWhere("product="+ Variables.ProductDepositID));
-		dataset.setValue("Pfand Rückgabe", dbh.getPurchaseCountWhere("product="+ Variables.ProductDepositReturnID));
-		
+		dataset.setValue("Pfand Ausgabe", dbh.getPurchaseCountWhere("product=" + Variables.productDepositID));
+		dataset.setValue("Pfand Rückgabe", dbh.getPurchaseCountWhere("product=" + Variables.productDepositReturnID));
+
 		return dataset;
 	}
 

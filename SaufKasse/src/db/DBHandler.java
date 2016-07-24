@@ -47,14 +47,17 @@ public class DBHandler {
 
 	private static final String DATA_INIT_VOUCHER1 = "INSERT INTO voucher (id, price, color, description) VALUES (1,3.0,'#FF0004','<html>Bier - Schorle<br>Rote Wurst<br>Curry Wurst</html>');";
 	private static final String DATA_INIT_VOUCHER2 = "INSERT INTO voucher (id, price, color, description) VALUES (2,3.5,'#F0FFFF','Steak');";
-	private static final String DATA_INIT_VOUCHER3 = "INSERT INTO voucher (id, price, color, description) VALUES (3,2.5,'#C1FFC1','Weizenbier');";
+	private static final String DATA_INIT_VOUCHER3 = "INSERT INTO voucher (id, price, color, description) VALUES (3,2.3,'#C1FFC1','Weizenbier');";
 	private static final String DATA_INIT_VOUCHER4 = "INSERT INTO voucher (id, price, color, description) VALUES (4,2.0,'#FFD700','<html>Spezi<br>Apfelschorle</html>');";
 	private static final String DATA_INIT_VOUCHER5 = "INSERT INTO voucher (id, price, color, description) VALUES (5,1.7,'#4876FF','Cola, Bluna, Sprudel');";
 	private static final String DATA_INIT_VOUCHER6 = "INSERT INTO voucher (id, price, color, description) VALUES (6,12.0,'#FFC1C1','Wein');";
 	private static final String DATA_INIT_VOUCHER7 = "INSERT INTO voucher (id, price, color, description) VALUES (7,9.0,'#FFC1C1','<html>Wein<br>(Mittagessen)</html>');";
 	private static final String DATA_INIT_VOUCHER8 = "INSERT INTO voucher (id, price, color, description) VALUES (8,2.0,'#FFFFFF','Pfand');";
 	private static final String DATA_INIT_VOUCHER9 = "INSERT INTO voucher (id, price, color, description) VALUES (9,-2.0,'#FFFFFF','Pfand Rückgabe');";
-
+	private static final String DATA_INIT_VOUCHER10 = "INSERT INTO voucher (id, price, color, description) VALUES (10,7.0,'#FFFFFF','7 €');";
+	private static final String DATA_INIT_VOUCHER11 = "INSERT INTO voucher (id, price, color, description) VALUES (11,5.0,'#FFFFFF','5 €');";
+	private static final String DATA_INIT_VOUCHER12 = "INSERT INTO voucher (id, price, color, description) VALUES (12,2.5,'#FFFFFF','2,5 €');";
+	
 	private static final String DATA_INIT_ProductCategory1 = "INSERT INTO productcategory (id, description) VALUES (1,'Alkohol');";
 	private static final String DATA_INIT_ProductCategory2 = "INSERT INTO productcategory (id, description) VALUES (2,'Alkoholfrei');";
 	private static final String DATA_INIT_ProductCategory3 = "INSERT INTO productcategory (id, description) VALUES (3,'Flaschen');";
@@ -65,7 +68,7 @@ public class DBHandler {
 	private static final String DATA_INIT_Product2 = "INSERT INTO product (id, name, voucher, product_category, includeDeposit) VALUES (2,'Weizen',3,1, 1);";
 	private static final String DATA_INIT_Product3 = "INSERT INTO product (id, name, voucher, product_category, includeDeposit) VALUES (3,'Radler',1,1, 0);";
 	private static final String DATA_INIT_Product4 = "INSERT INTO product (id, name, voucher, product_category, includeDeposit) VALUES (4,'1/4 Wein',2,1, 0);";
-	private static final String DATA_INIT_Product5 = "INSERT INTO product (id, name, voucher, product_category, includeDeposit) VALUES (5,'Weinschorle',1,1, 0);";
+	private static final String DATA_INIT_Product5 = "INSERT INTO product (id, name, voucher, product_category, includeDeposit) VALUES (5,'Weinschorle',12,1, 0);";
 	private static final String DATA_INIT_Product6 = "INSERT INTO product (id, name, voucher, product_category, includeDeposit) VALUES (6,'Cola',5,2, 0);";
 	private static final String DATA_INIT_Product7 = "INSERT INTO product (id, name, voucher, product_category, includeDeposit) VALUES (7,'Spezi',4,2, 0);";
 	private static final String DATA_INIT_Product8 = "INSERT INTO product (id, name, voucher, product_category, includeDeposit) VALUES (8,'Bluna',5,2, 0);";
@@ -80,7 +83,12 @@ public class DBHandler {
 	private static final String DATA_INIT_Product17 = "INSERT INTO product (id, name, voucher, product_category, includeDeposit) VALUES (17,'Mittagessen',7,4, 0);";
 	private static final String DATA_INIT_Product18 = "INSERT INTO product (id, name, voucher, product_category, includeDeposit) VALUES (18,'Pfand',8,5, 0);";
 	private static final String DATA_INIT_Product19 = "INSERT INTO product (id, name, voucher, product_category, includeDeposit) VALUES (19,'Pfand Rückgabe',9,5, 0);";
+	private static final String DATA_INIT_Product20 = "INSERT INTO product (id, name, voucher, product_category, includeDeposit) VALUES (20,'Iso Sport',4,2, 0);";
+	private static final String DATA_INIT_Product21 = "INSERT INTO product (id, name, voucher, product_category, includeDeposit) VALUES (21,'Kinderteller',10,4, 0);";
+	private static final String DATA_INIT_Product22 = "INSERT INTO product (id, name, voucher, product_category, includeDeposit) VALUES (22,'Bratwurst',10,4, 0);";
+	private static final String DATA_INIT_Product23 = "INSERT INTO product (id, name, voucher, product_category, includeDeposit) VALUES (23,'Handwerkervesper',11,4, 0);";
 
+	
 	private static final String GET_PRODUCTS = "SELECT * FROM product;";
 	private static final String GET_VOUCHERS = "SELECT * FROM voucher;";
 
@@ -118,7 +126,11 @@ public class DBHandler {
 			stmt.execute(DATA_INIT_VOUCHER7);
 			stmt.execute(DATA_INIT_VOUCHER8);
 			stmt.execute(DATA_INIT_VOUCHER9);
+			stmt.execute(DATA_INIT_VOUCHER10);
+			stmt.execute(DATA_INIT_VOUCHER11);
+			stmt.execute(DATA_INIT_VOUCHER12);
 
+			
 			// Product Category Init
 			stmt.execute(DATA_INIT_ProductCategory1);
 			stmt.execute(DATA_INIT_ProductCategory2);
@@ -146,6 +158,10 @@ public class DBHandler {
 			stmt.execute(DATA_INIT_Product17);
 			stmt.execute(DATA_INIT_Product18);
 			stmt.execute(DATA_INIT_Product19);
+			stmt.execute(DATA_INIT_Product20);
+			stmt.execute(DATA_INIT_Product21);
+			stmt.execute(DATA_INIT_Product22);
+			stmt.execute(DATA_INIT_Product23);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -301,12 +317,14 @@ public class DBHandler {
 		double soldsum = 0;
 		try {
 			ResultSet rs = stmt.executeQuery(
-					"SELECT invoiceline.voucher, invoiceline.product, invoiceline.count, voucher.price FROM Invoiceline INNER JOIN Voucher ON Invoiceline.voucher=voucher.id WHERE "+strWhere+";");
+					"SELECT invoiceline.voucher, invoiceline.product, invoiceline.count, voucher.price FROM Invoiceline INNER JOIN Voucher ON Invoiceline.voucher=voucher.id WHERE "
+							+ strWhere + ";");
 			while (rs.next()) {
 				int count = rs.getInt("count");
 				double price = rs.getDouble("price");
 				soldsum = soldsum + (count * price);
-				//System.out.println(""+count+" * " + price + " = " + (count * price) + " - Gesamt: "+ soldsum);
+				// System.out.println(""+count+" * " + price + " = " + (count *
+				// price) + " - Gesamt: "+ soldsum);
 			}
 			rs.close();
 		} catch (SQLException e) {
