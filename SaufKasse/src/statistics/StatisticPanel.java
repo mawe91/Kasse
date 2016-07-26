@@ -1,5 +1,6 @@
 package statistics;
 
+import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -10,6 +11,7 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -26,11 +28,15 @@ import javax.swing.border.TitledBorder;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.DateAxis;
 import org.jfree.chart.labels.PieSectionLabelGenerator;
 import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PiePlot;
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.xy.StandardXYItemRenderer;
+import org.jfree.chart.renderer.xy.XYItemRenderer;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 
@@ -169,33 +175,6 @@ public class StatisticPanel extends JPanel {
 		setSize(new Dimension(1024, 768));
 		setVisible(true);
 
-		// JFreeChart chart2 = ChartFactory.createTimeSeriesChart("Umsatz",
-		// "Zeit", "Umsatz", model.getSalesTimeSeries(), true, true, false);
-		// chart2.setBackgroundPaint(Color.WHITE);
-		//
-		// final XYPlot plot = chart2.getXYPlot();
-		// plot.setBackgroundPaint(Color.lightGray);
-		// plot.setDomainGridlinePaint(Color.white);
-		// plot.setRangeGridlinePaint(Color.white);
-		// plot.setDomainCrosshairVisible(true);
-		// plot.setRangeCrosshairVisible(false);
-		//
-		// final XYItemRenderer renderer = plot.getRenderer();
-		// if (renderer instanceof StandardXYItemRenderer) {
-		// final StandardXYItemRenderer rr = (StandardXYItemRenderer) renderer;
-		// rr.setBaseShapesVisible(true);
-		// renderer.setSeriesStroke(0, new BasicStroke(2.0f));
-		// renderer.setSeriesStroke(1, new BasicStroke(2.0f));
-		// }
-		//
-		// final DateAxis axis = (DateAxis) plot.getDomainAxis();
-		// axis.setDateFormatOverride(new SimpleDateFormat("yyyy.MM.dd '-'
-		// HH:mm"));
-		//
-		// ChartPanel chartpanel2 = new ChartPanel(chart2);
-		// panel2.removeAll();
-		// panel2.add(chartpanel2, BorderLayout.CENTER);
-
 		tabbedPane.add("Verkaufte Märkchen",
 				generateBarChartPanel("Verkaufte Märkchen Gesamt", model.getSoldVoucherDatasetWithoutDeposit()));
 		tabbedPane.add("Verkaufte Produkte", generateBarChartPanel("Verkaufte Produkte (Ohne Märkchendirektbuchung)",
@@ -205,21 +184,54 @@ public class StatisticPanel extends JPanel {
 
 		return tabbedPane;
 	}
-	
+
 	public void updateCharts() {
 
 		removeAll();
-		
+
 		uiRepo = new ArrayList<>();
 		chartRepo = new ArrayList<>();
 		add(initChartTabbedPane(), BorderLayout.CENTER);
-		
-		
+
 		repaint();
 		revalidate();
+
+	}
+
+	private JPanel generateTimeChart() {
+		
+		JPanel panel = new JPanel();
+		
+		JFreeChart chart2 = ChartFactory.createTimeSeriesChart("Umsatz",
+		"Zeit", "Umsatz", model.getSalesTimeSeries(), true, true, false);
+		chart2.setBackgroundPaint(Color.WHITE);
+		
+		final XYPlot plot = chart2.getXYPlot();
+		 plot.setBackgroundPaint(Color.lightGray);
+		 plot.setDomainGridlinePaint(Color.white);
+		 plot.setRangeGridlinePaint(Color.white);
+		 plot.setDomainCrosshairVisible(true);
+		 plot.setRangeCrosshairVisible(false);
+		
+		 final XYItemRenderer renderer = plot.getRenderer();
+		 if (renderer instanceof StandardXYItemRenderer) {
+		 final StandardXYItemRenderer rr = (StandardXYItemRenderer) renderer;
+		 rr.setBaseShapesVisible(true);
+		 renderer.setSeriesStroke(0, new BasicStroke(2.0f));
+		 renderer.setSeriesStroke(1, new BasicStroke(2.0f));
+		 }
+		
+		 final DateAxis axis = (DateAxis) plot.getDomainAxis();
+		 axis.setDateFormatOverride(new SimpleDateFormat("yyyy.MM.dd '-'HH:mm"));
+		
+		 ChartPanel chartpanel2 = new ChartPanel(chart2);
+		 panel.removeAll();
+		 panel.add(chartpanel2, BorderLayout.CENTER);
+		
+		return panel;
 		
 	}
-	
+
 	private JPanel generatePieChartPanel(String graphname, DefaultPieDataset dataset) {
 		JPanel panel = new JPanel(new BorderLayout());
 
@@ -230,10 +242,10 @@ public class StatisticPanel extends JPanel {
 		plot.setNoDataMessage("No data available");
 		plot.setCircular(false);
 		plot.setLabelGap(0.02);
-		
-		PieSectionLabelGenerator gen = new StandardPieSectionLabelGenerator(
-	            "{0}: {1} ({2})", new DecimalFormat("0"), new DecimalFormat("0%"));
-	        plot.setLabelGenerator(gen);
+
+		PieSectionLabelGenerator gen = new StandardPieSectionLabelGenerator("{0}: {1} ({2})", new DecimalFormat("0"),
+				new DecimalFormat("0%"));
+		plot.setLabelGenerator(gen);
 
 		ChartPanel chartpanel = new ChartPanel(chart);
 		chartRepo.add(chartpanel);
@@ -243,12 +255,12 @@ public class StatisticPanel extends JPanel {
 
 	private JPanel generateBarChartPanel(String graphName, DefaultCategoryDataset dataset) {
 		JPanel panel = new JPanel(new BorderLayout());
-		
+
 		JFreeChart chart = ChartFactory.createBarChart(graphName, "", "", dataset, PlotOrientation.HORIZONTAL, true,
 				true, false);
 		CategoryPlot catplot = chart.getCategoryPlot();
 		catplot.setRangeGridlinePaint(Color.BLACK);
-		
+
 		ChartPanel chartpanel = new ChartPanel(chart);
 		chartRepo.add(chartpanel);
 		panel.removeAll();
@@ -391,7 +403,5 @@ public class StatisticPanel extends JPanel {
 		txfSoldVouchersWithoutDepositWithProducts.setText("" + model.getSoldVouchersWithoutDepositWithProducts());
 		txfSoldMinusReturnDeposit.setText("" + model.getSoldAndRefundDepositDifference());
 	}
-
-
 
 }
