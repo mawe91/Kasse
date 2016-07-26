@@ -54,9 +54,9 @@ public class DBHandler {
 	private static final String DATA_INIT_VOUCHER7 = "INSERT INTO voucher (id, price, color, description) VALUES (7,9.0,'#FFC1C1','<html>Wein<br>(Mittagessen)</html>');";
 	private static final String DATA_INIT_VOUCHER8 = "INSERT INTO voucher (id, price, color, description) VALUES (8,2.0,'#FFFFFF','Pfand');";
 	private static final String DATA_INIT_VOUCHER9 = "INSERT INTO voucher (id, price, color, description) VALUES (9,-2.0,'#FFFFFF','Pfand Rückgabe');";
-	private static final String DATA_INIT_VOUCHER10 = "INSERT INTO voucher (id, price, color, description) VALUES (10,7.0,'#FFFFFF','7 €');";
-	private static final String DATA_INIT_VOUCHER11 = "INSERT INTO voucher (id, price, color, description) VALUES (11,5.0,'#FFFFFF','5 €');";
-	private static final String DATA_INIT_VOUCHER12 = "INSERT INTO voucher (id, price, color, description) VALUES (12,2.5,'#FFFFFF','2,5 €');";
+	private static final String DATA_INIT_VOUCHER10 = "INSERT INTO voucher (id, price, color, description) VALUES (10,7.0,'#FFFFFF','Kinderteller (7 €)');";
+	private static final String DATA_INIT_VOUCHER11 = "INSERT INTO voucher (id, price, color, description) VALUES (11,5.0,'#FFFFFF','Vesper (5 €)');";
+	private static final String DATA_INIT_VOUCHER12 = "INSERT INTO voucher (id, price, color, description) VALUES (12,2.5,'#FFFFFF','Weinschorle (2,5 €)');";
 	
 	private static final String DATA_INIT_ProductCategory1 = "INSERT INTO productcategory (id, description) VALUES (1,'Alkohol');";
 	private static final String DATA_INIT_ProductCategory2 = "INSERT INTO productcategory (id, description) VALUES (2,'Alkoholfrei');";
