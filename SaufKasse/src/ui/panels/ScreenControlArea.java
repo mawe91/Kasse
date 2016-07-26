@@ -2,13 +2,10 @@ package ui.panels;
 
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
 import alertobjects.CalcFieldAlert;
-import beans.Product;
-import beans.Voucher;
 import controller.Controller;
 
 public class ScreenControlArea extends JPanel{
