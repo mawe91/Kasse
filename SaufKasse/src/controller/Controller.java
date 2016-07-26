@@ -88,6 +88,9 @@ public class Controller implements ActionListener, ListSelectionListener {
 			} else if (arg0.getActionCommand() == "Bezahlen") {
 				view.changeToPayMode();
 				model.deleteCalcValue();
+				if (model.isPaidSumBiggerThanInvoiceSum()) {
+					invoiceTermination();
+				}
 				return;
 			} else if (arg0.getActionCommand() == "Weiter kassieren") {
 				view.changeToSellingMode();
