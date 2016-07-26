@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 
@@ -37,9 +36,7 @@ public class VoucherPanel extends AbstractKassenPanel {
 	public void updateVoucherCount(Map<Integer, Integer> voucherMap) {
 		
 		for (int i = 0; i < voucherCountLabels.size(); i++) {
-			
-			//System.out.println(voucherNameLabels.get(i).getText() + " Count: "+ voucherMap.get(i+1));
-			
+						
 			Integer vIDCount = voucherMap.get(i + 1);
 			if (vIDCount == null) {
 				vIDCount = 0;

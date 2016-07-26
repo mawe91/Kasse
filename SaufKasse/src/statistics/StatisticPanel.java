@@ -80,7 +80,7 @@ public class StatisticPanel extends JPanel {
 		add(initChartTabbedPane(), BorderLayout.CENTER);
 	}
 
-	// unused
+	@SuppressWarnings("unused")
 	private JPanel initDatePickerPanel() {
 		JPanel panel = new JPanel();
 		panel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Datum und Zeit eingrenzen",
@@ -198,6 +198,7 @@ public class StatisticPanel extends JPanel {
 
 	}
 
+	@SuppressWarnings("unused")
 	private JPanel generateTimeChart() {
 		
 		JPanel panel = new JPanel();
