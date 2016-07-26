@@ -23,6 +23,7 @@ import beans.Product;
 import beans.Voucher;
 import controller.Controller;
 import statistics.StatisticPanel;
+import ui.panels.OrderButtonPanel;
 import ui.panels.ScreenControlArea;
 import ui.panels.ScreenInfoArea;
 import utilities.Variables;
@@ -41,6 +42,7 @@ public class View extends JFrame implements Observer {
 
 	private ScreenInfoArea infoTopArea;
 	private ScreenControlArea buttonButtomPanel;
+	private OrderButtonPanel odp;
 
 	private Container c;
 
@@ -81,14 +83,21 @@ public class View extends JFrame implements Observer {
 	}
 
 	private JPanel initCheckoutPanel(Controller con) {
-		JPanel checkoutPanel = new JPanel(new GridLayout(2, 1));
+		JPanel surroundingPanel = new JPanel(new BorderLayout());
+		
+		odp = new OrderButtonPanel(con);
+		surroundingPanel.add(odp, BorderLayout.WEST);
+		
+		JPanel checkoutPanel = new JPanel(new GridLayout(2, 0));
 		infoTopArea = new ScreenInfoArea(con);
 		checkoutPanel.add(infoTopArea);
 
 		buttonButtomPanel = new ScreenControlArea(con);
 		checkoutPanel.add(buttonButtomPanel);
-
-		return checkoutPanel;
+		
+		surroundingPanel.add(checkoutPanel, BorderLayout.CENTER);
+		
+		return surroundingPanel;
 	}
 
 	private void initJMenu(Controller handler) {
@@ -123,7 +132,7 @@ public class View extends JFrame implements Observer {
 	}
 
 	public void initialize(ArrayList<Product> alp, ArrayList<Voucher> alv) {
-		buttonButtomPanel.initialize(alp, alv);
+		odp.initialize(alp,alv);
 		infoTopArea.initialize(alv);
 
 	}
@@ -161,12 +170,14 @@ public class View extends JFrame implements Observer {
 
 	public void changeToPayMode() {
 		buttonButtomPanel.changeToPayMode();
+		odp.changeToPayMode();
 		repaint();
 		revalidate();
 	}
 
 	public void changeToSellingMode() {
 		buttonButtomPanel.changeToSellingMode();
+		odp.changeToSellingMode();
 		repaint();
 		revalidate();
 	}
@@ -182,6 +193,7 @@ public class View extends JFrame implements Observer {
 	public void changeFont(Font buttonAndComboFont) {
 		buttonButtomPanel.changeFont(buttonAndComboFont);
 		infoTopArea.changeFont(buttonAndComboFont);
+		odp.changeFont(buttonAndComboFont);
 		repaint();
 		revalidate();
 	}
