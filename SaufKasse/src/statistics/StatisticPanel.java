@@ -176,7 +176,7 @@ public class StatisticPanel extends JPanel {
 		setVisible(true);
 
 		tabbedPane.add("Verkaufte Märkchen",
-				generateBarChartPanel("Verkaufte Märkchen Gesamt", model.getSoldVoucherDatasetWithoutDeposit()));
+				generateBarChartPanel("Verkaufte Märkchen Gesamt (inkl. Produktverkauf)", model.getSoldVoucherDatasetWithoutDeposit()));
 		tabbedPane.add("Verkaufte Produkte", generateBarChartPanel("Verkaufte Produkte (Ohne Märkchendirektbuchung)",
 				model.getSoldProductsWithoutDeposit()));
 		tabbedPane.add("Pfand", generatePieChartPanel("Pfand", model.getDepositPieData()));

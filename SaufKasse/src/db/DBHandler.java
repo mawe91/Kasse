@@ -44,7 +44,10 @@ public class DBHandler {
 	private static final String CREATE_TABLE7 = "CREATE TABLE InvoiceLine (id INTEGER PRIMARY KEY AUTOINCREMENT, product INTEGER REFERENCES Product (id), count INTEGER NOT NULL, invoice INTEGER NOT NULL REFERENCES Invoice (id), voucher INTEGER NOT NULL REFERENCES Voucher (id));";
 	private static final String CREATE_TABLE8 = "CREATE INDEX idx_invoiceline__invoice ON InvoiceLine (invoice);";
 	private static final String CREATE_TABLE9 = "CREATE INDEX idx_invoiceline__product ON InvoiceLine (product);";
-
+	private static final String CREATE_TABLE10 = "CREATE TABLE 'ModelVersion' ('id' INTEGER PRIMARY KEY AUTOINCREMENT,'VersionName' TEXT NOT NULL);";
+	
+	private static final String DATA_INIT_MODEL_VERSION = "INSERT INTO ModelVersion (id, VersionName) VALUES (1,'1.00');";
+	
 	private static final String DATA_INIT_VOUCHER1 = "INSERT INTO voucher (id, price, color, description) VALUES (1,3.0,'#FF0004','<html>Bier - Schorle<br>Rote Wurst<br>Curry Wurst</html>');";
 	private static final String DATA_INIT_VOUCHER2 = "INSERT INTO voucher (id, price, color, description) VALUES (2,3.5,'#F0FFFF','Steak');";
 	private static final String DATA_INIT_VOUCHER3 = "INSERT INTO voucher (id, price, color, description) VALUES (3,2.3,'#C1FFC1','Weizenbier');";
@@ -115,6 +118,9 @@ public class DBHandler {
 			stmt.execute(CREATE_TABLE7);
 			stmt.execute(CREATE_TABLE8);
 			stmt.execute(CREATE_TABLE9);
+			stmt.execute(CREATE_TABLE10);
+			
+			stmt.execute(DATA_INIT_MODEL_VERSION);
 
 			// Voucher Init
 			stmt.execute(DATA_INIT_VOUCHER1);
