@@ -6,7 +6,7 @@ import java.text.DecimalFormat;
 public class Variables {
 
 	
-	public static Font buttonAndComboFont = new Font("Tahoma", Font.BOLD, 17); 
+	public static Font buttonAndComboFont = new Font("Tahoma", Font.BOLD, 15); 
 	public static Font menuFont = new Font("Tahoma", Font.PLAIN, 10); 
 	
 	public static final int productDepositID = 18;
