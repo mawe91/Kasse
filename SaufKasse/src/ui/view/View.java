@@ -1,6 +1,7 @@
 package ui.view;
 
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -43,6 +44,8 @@ public class View extends JFrame implements Observer {
 	private ScreenInfoArea infoTopArea;
 	private ScreenControlArea buttonButtomPanel;
 	private OrderButtonPanel odp;
+	
+	private JPanel buttonSwitchPanel;
 
 	private Container c;
 
@@ -83,10 +86,22 @@ public class View extends JFrame implements Observer {
 	}
 
 	private JPanel initCheckoutPanel(Controller con) {
-		JPanel surroundingPanel = new JPanel(new BorderLayout());
+		JPanel panel = new JPanel(new BorderLayout());
+		
+		buttonSwitchPanel = new JPanel(new CardLayout());
+		
+		JPanel emptyCard = new JPanel(new BorderLayout());
+		emptyCard.add(new JLabel(""), BorderLayout.CENTER);
+		
+		JPanel buttonCard = new JPanel(new BorderLayout());
 		
 		odp = new OrderButtonPanel(con);
-		surroundingPanel.add(odp, BorderLayout.WEST);
+		buttonCard.add(odp);
+		
+		buttonSwitchPanel.add(buttonCard,  "buttons");
+		buttonSwitchPanel.add(emptyCard, "empty");
+		
+		panel.add(buttonSwitchPanel, BorderLayout.WEST);
 		
 		JPanel checkoutPanel = new JPanel(new GridLayout(2, 0));
 		infoTopArea = new ScreenInfoArea(con);
@@ -95,9 +110,9 @@ public class View extends JFrame implements Observer {
 		buttonButtomPanel = new ScreenControlArea(con);
 		checkoutPanel.add(buttonButtomPanel);
 		
-		surroundingPanel.add(checkoutPanel, BorderLayout.CENTER);
+		panel.add(checkoutPanel, BorderLayout.CENTER);
 		
-		return surroundingPanel;
+		return panel;
 	}
 
 	private void initJMenu(Controller handler) {
@@ -170,14 +185,22 @@ public class View extends JFrame implements Observer {
 
 	public void changeToPayMode() {
 		buttonButtomPanel.changeToPayMode();
-		odp.changeToPayMode();
+		
+		//Switch Buttons
+		CardLayout cardLayout = (CardLayout) buttonSwitchPanel.getLayout();
+		cardLayout.show(buttonSwitchPanel, "empty");
+		
 		repaint();
 		revalidate();
 	}
 
 	public void changeToSellingMode() {
 		buttonButtomPanel.changeToSellingMode();
-		odp.changeToSellingMode();
+		
+		//Switch Buttons
+		CardLayout cardLayout = (CardLayout) buttonSwitchPanel.getLayout();
+		cardLayout.show(buttonSwitchPanel, "buttons");
+		
 		repaint();
 		revalidate();
 	}

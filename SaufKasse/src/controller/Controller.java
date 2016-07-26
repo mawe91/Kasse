@@ -5,12 +5,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.DefaultListSelectionModel;
-import javax.swing.JFrame;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import model.Model;
-import statistics.StatisticPanel;
 import ui.view.View;
 import utilities.Variables;
 
@@ -20,7 +18,6 @@ public class Controller implements ActionListener, ListSelectionListener {
 
 	private View view;
 	
-	private StatisticPanel sf;
 
 	private int selectedInvoiceLineStart;
 	private int selectedInvoiceLineEnd;
