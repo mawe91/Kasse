@@ -151,14 +151,6 @@ public class View extends JFrame implements Observer {
 
 	}
 
-	public int finishInvoiceFrame() {
-		String[] yesNoOptions = { "Best‰tigen", "Zahlung korrigieren", "Bon Abbrechen" };
-
-		return JOptionPane.showOptionDialog(null, "Rechnung abschlieﬂen?", "Rechnungsabschluss",
-				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, yesNoOptions, yesNoOptions[0]);
-
-	}
-
 	@Override
 	public void update(Observable o, Object arg) {
 

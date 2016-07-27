@@ -17,7 +17,6 @@ public class Controller implements ActionListener, ListSelectionListener {
 	private Model model;
 
 	private View view;
-	
 
 	private int selectedInvoiceLineStart;
 	private int selectedInvoiceLineEnd;
@@ -40,126 +39,114 @@ public class Controller implements ActionListener, ListSelectionListener {
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 
-			// order products
-			for (int i = 0; i < model.getAllProducts().size(); i++) {
-				if (arg0.getActionCommand() == model.getAllProducts().get(i).getName()) {
+		// order products
+		for (int i = 0; i < model.getAllProducts().size(); i++) {
+			if (arg0.getActionCommand() == model.getAllProducts().get(i).getName()) {
 
-					model.orderProduct(model.getAllProducts().get(i).getId());
+				model.orderProduct(model.getAllProducts().get(i).getId());
+				return;
+			}
+		}
+
+		// order voucher
+		for (int i = 0; i < model.getAllVouchers().size(); i++) {
+			if (arg0.getActionCommand() == model.getAllVouchers().get(i).getDescription()) {
+				model.orderVoucher(model.getAllVouchers().get(i).getId());
+				return;
+			}
+		}
+
+		// calc
+		for (int i = 0; i < 10; i++) {
+			try {
+				if (Integer.parseInt(arg0.getActionCommand()) == i) {
+					model.addCalculatorNumber(i);
 					return;
 				}
+			} catch (NumberFormatException e) {
+				// catch when no number - nothing to do
 			}
-
-			// order voucher
-			for (int i = 0; i < model.getAllVouchers().size(); i++) {
-				if (arg0.getActionCommand() == model.getAllVouchers().get(i).getDescription()) {
-					model.orderVoucher(model.getAllVouchers().get(i).getId());
-					return;
-				}
+		}
+		if (arg0.getActionCommand() == ",") {
+			model.addCalculatorComma();
+		} else if (arg0.getActionCommand() == "Bar") {
+			model.payUnroundSum();
+			if (model.isPaidSumBiggerThanInvoiceSum()) {
+				invoiceTermination();
 			}
-
-			// calc
-			for (int i = 0; i < 10; i++) {
-				try {
-					if (Integer.parseInt(arg0.getActionCommand()) == i) {
-						model.addCalculatorNumber(i);
-						return;
-					}
-				} catch (NumberFormatException e) {
-					//catch when no number - nothing to do
-				}
+			return;
+		} else if (arg0.getActionCommand() == "X") {
+			model.multiplyCount();
+			return;
+		} else if (arg0.getActionCommand() == "del") {
+			model.deleteCalcValue();
+			return;
+		} else if (arg0.getActionCommand() == "Bezahlen") {
+			model.payUnroundSum();
+			if (model.isPaidSumBiggerThanInvoiceSum()) {
+				invoiceTermination();
 			}
-			if (arg0.getActionCommand() == ",") {
-				model.addCalculatorComma();
-			} else if (arg0.getActionCommand() == "Bar") {
-				model.payUnroundSum();
-				if (model.isPaidSumBiggerThanInvoiceSum()) {
-					invoiceTermination();
-				}
-				return;
-			} else if (arg0.getActionCommand() == "X") {
-				model.multiplyCount();
-				return;
-			} else if (arg0.getActionCommand() == "del") {
-				model.deleteCalcValue();
-				return;
-			} else if (arg0.getActionCommand() == "Bezahlen") {
-				view.changeToPayMode();
-				model.deleteCalcValue();
-				if (model.isPaidSumBiggerThanInvoiceSum()) {
-					invoiceTermination();
-				}
-				return;
-			} else if (arg0.getActionCommand() == "Weiter kassieren") {
-				view.changeToSellingMode();
-				model.deleteCalcValue();
-				return;
-			} else if (arg0.getActionCommand() == "Zeilenstorno") {
-				model.deleteInvoiceLines(selectedInvoiceLineStart, selectedInvoiceLineEnd);
-				return;
-			} else if (arg0.getActionCommand() == "Bon abbrechen") {
-				model.deleteAndInitNewInvoice();
-				view.changeToSellingMode();
-				return;
-			} else if (arg0.getActionCommand() == "5 €") {
-				model.paySum(5);
-				if (model.isPaidSumBiggerThanInvoiceSum()) {
-					invoiceTermination();
-				}
-				return;
-			} else if (arg0.getActionCommand() == "10 €") {
-				model.paySum(10);
-				if (model.isPaidSumBiggerThanInvoiceSum()) {
-					invoiceTermination();
-				}
-				return;
-			} else if (arg0.getActionCommand() == "20 €") {
-				model.paySum(20);
-				if (model.isPaidSumBiggerThanInvoiceSum()) {
-					invoiceTermination();
-				}
-				return;
-			} else if (arg0.getActionCommand() == "50 €") {
-				model.paySum(50);
-				if (model.isPaidSumBiggerThanInvoiceSum()) {
-					invoiceTermination();
-				}
-				return;
-			} else if (arg0.getActionCommand() == "Zahlung korrigieren") {
-				model.deletePaidSum();
-				return;
-			} else if (arg0.getActionCommand() == "Schrift +") {
-				// Test Font change
-				int oldFontSize = Variables.buttonAndComboFont.getSize();
-				Variables.buttonAndComboFont = new Font("Arial", Font.BOLD, oldFontSize + 3);
+			return;
+		} else if (arg0.getActionCommand() == "Weiter kassieren") {
+			view.changeToSellingMode();
+			model.deleteCalcValue();
+			return;
+		} else if (arg0.getActionCommand() == "Zeilenstorno") {
+			model.deleteInvoiceLines(selectedInvoiceLineStart, selectedInvoiceLineEnd);
+			return;
+		} else if (arg0.getActionCommand() == "Bon abbrechen") {
+			model.deleteAndInitNewInvoice();
+			view.changeToSellingMode();
+			return;
+		} else if (arg0.getActionCommand() == "5 €") {
+			model.paySum(5);
+			if (model.isPaidSumBiggerThanInvoiceSum()) {
+				invoiceTermination();
+			}
+			return;
+		} else if (arg0.getActionCommand() == "10 €") {
+			model.paySum(10);
+			if (model.isPaidSumBiggerThanInvoiceSum()) {
+				invoiceTermination();
+			}
+			return;
+		} else if (arg0.getActionCommand() == "20 €") {
+			model.paySum(20);
+			if (model.isPaidSumBiggerThanInvoiceSum()) {
+				invoiceTermination();
+			}
+			return;
+		} else if (arg0.getActionCommand() == "50 €") {
+			model.paySum(50);
+			if (model.isPaidSumBiggerThanInvoiceSum()) {
+				invoiceTermination();
+			}
+			return;
+		} else if (arg0.getActionCommand() == "Zahlung korrigieren") {
+			model.deletePaidSum();
+			return;
+		} else if (arg0.getActionCommand() == "Schrift +") {
+			// Test Font change
+			int oldFontSize = Variables.buttonAndComboFont.getSize();
+			Variables.buttonAndComboFont = new Font("Arial", Font.BOLD, oldFontSize + 3);
+			view.changeFont(Variables.buttonAndComboFont);
+			return;
+		} else if (arg0.getActionCommand() == "Schrift -") {
+			int oldFontSize = Variables.buttonAndComboFont.getSize();
+			if (Variables.buttonAndComboFont.getSize() > 10) {
+				Variables.buttonAndComboFont = new Font("Arial", Font.BOLD, oldFontSize - 3);
 				view.changeFont(Variables.buttonAndComboFont);
-				return;
-			} else if (arg0.getActionCommand() == "Schrift -") {
-				int oldFontSize = Variables.buttonAndComboFont.getSize();
-				if (Variables.buttonAndComboFont.getSize() > 10) {
-					Variables.buttonAndComboFont = new Font("Arial", Font.BOLD, oldFontSize - 3);
-					view.changeFont(Variables.buttonAndComboFont);
-				}
-				return;
 			}
+			return;
+		}
 
 	}
 
 	private void invoiceTermination() {
-		int n = view.finishInvoiceFrame();
 
-		// Bestätigen
-		if (n == 0) {
-			model.saveAndInitInvoice();
-			view.changeToSellingMode();
-			// Zahlung korrigieren
-		} else if (n == 1) {
-			model.deletePaidSum();
-
-			// Bon abbrechen
-		} else if (n == 2) {
-			model.deleteAndInitNewInvoice();
-			view.changeToSellingMode();
-		}
+		model.saveAndInitInvoice();
+		view.changeToSellingMode();
+		// Zahlung korrigieren
 
 	}
 
