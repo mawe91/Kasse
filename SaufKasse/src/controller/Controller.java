@@ -87,16 +87,8 @@ public class Controller implements ActionListener, ListSelectionListener {
 				invoiceTermination();
 			}
 			return;
-		} else if (arg0.getActionCommand() == "Weiter kassieren") {
-			view.changeToSellingMode();
-			model.deleteCalcValue();
-			return;
 		} else if (arg0.getActionCommand() == "Zeilenstorno") {
 			model.deleteInvoiceLines(selectedInvoiceLineStart, selectedInvoiceLineEnd);
-			return;
-		} else if (arg0.getActionCommand() == "Bon abbrechen") {
-			model.deleteAndInitNewInvoice();
-			view.changeToSellingMode();
 			return;
 		} else if (arg0.getActionCommand() == "5 €") {
 			model.paySum(5);
@@ -145,8 +137,6 @@ public class Controller implements ActionListener, ListSelectionListener {
 	private void invoiceTermination() {
 
 		model.saveAndInitInvoice();
-		view.changeToSellingMode();
-		// Zahlung korrigieren
 
 	}
 
